@@ -193,7 +193,7 @@
         <div class="mt-8 pt-6 border-t border-slate-800/80 text-center">
           <button onclick="handleResetAllData()" class="inline-flex items-center text-xs text-red-400 hover:text-red-300 transition">
             <i data-lucide="refresh-cw" class="w-3.5 h-3.5 mr-1.5"></i>
-            <span>Reset Ulang Browser / Cleared LocalStorage</span>
+            <span>Reset Ulang Data Akun / Clear LocalStorage</span>
           </button>
         </div>
 
@@ -428,7 +428,7 @@
     /* 120 SOAL LENGKAP UTUH TIAP TEMA (20 SOAL UNIK x 6 TEMA) */
     function buildQuizDatabase() {
       return {
-        // TEMA 1: Mubtada' & Khabar (20 Soal Spasifik)
+        // TEMA 1: Mubtada' & Khabar (20 Soal Spesifik)
         tema01: [
           { id: 1, isQiraah: false, questionPrompt: "Pada kalimat 'الطَّالِبُ مُجْتَهِدٌ', manakah kata yang berkedudukan sebagai MUBTADA'?", arabicText: "الطَّالِبُ مُجْتَهِدٌ فِي الفَصْلِ", options: ["الطَّالِبُ", "مُجْتَهِدٌ", "فِي", "الفَصْلِ"], correctIndex: 0, analysis: "'الطَّالِبُ' berada di awal kalimat isim ber-i'rab Marfu' dengan Dhammah (Mubtada')." },
           { id: 2, isQiraah: false, questionPrompt: "Pada kalimat 'المُعَلِّمَةُ مَاهِرَةٌ', kata 'مَاهِرَةٌ' berkedudukan sebagai:", arabicText: "المُعَلِّمَةُ مَاهِرَةٌ", options: ["مُبْتَدَأٌ", "خَبَرٌ", "فَاعِلٌ", "مَفْعُولٌ بِهِ"], correctIndex: 1, analysis: "'مَاهِرَةٌ' menerangkan keadaan Subjek, ber-i'rab Marfu' (Khabar)." },
@@ -541,4 +541,510 @@
           { id: 13, isQiraah: false, questionPrompt: "Apa perbedaan Na'at Man'ut dengan Mubtada' Khabar pada susunan ber-AL?", arabicText: "الفَرْقُ بَيْنَ النَّعْتِ وَالخَبَرِ", options: ["Na'at ikutan ber-AL seperti Man'ut, sedangkan Khabar umumnya Nakirah", "Sama saja", "Khabar ber-AL, Na'at Nakirah", "Na'at selalu di awal"], correctIndex: 0, analysis: "Jika Man'ut ber-AL, Na'at wajib ber-AL ('الوَلَدُ الصَّالِحُ'). Pada Mubtada Khabar, Khabar umumnya Nakirah ('الوَلَدُ صَالِحٌ')." },
           { id: 14, isQiraah: false, questionPrompt: "Analisis frasa 'أَيَّامًا مَعْدُودَاتٍ':", arabicText: "أَيَّامًا مَعْدُودَاتٍ", options: ["Na'at & Man'ut", "Mubtada' Khabar", "Fi'il Fa'il", "Idhafah"], correctIndex: 0, analysis: "'مَعْدُودَاتٍ' adalah Na'at menyifati 'أَيَّامًا' (Man'ut)." },
           { id: 15, isQiraah: false, questionPrompt: "Lengkapi Na'at Mutsanna: 'يَعْمَلُ العَامِلاَنِ ...'", arabicText: "يَعْمَلُ العَامِلاَنِ ...", options: ["المُجْتَهِدَانِ", "المُجْتَهِدُونَ", "مُجْتَهِدٌ", "المُجْتَهِدَةُ"], correctIndex: 0, analysis: "Na'at menyesuaikan Mutsanna Marfu' bil Alif ('المُجْتَهِدَانِ')." },
-          { id: 16, isQiraah: true, qiraahText: "فِي الحَدِيقَةِ الكَبِيرَةِ أَزْهَارٌ جَمِيلَةٌ. يَمْشِي الوَلَدُ الصَّالِحُ عَلَى الطَّرِيقِ النَّظِيفِ.", questionPrompt: "[Qira'ah 1/5] Tentukan Na'at dari kata 'الحَدِيقَةِ' pada kalimat pertama!", arabicText: "
+          { id: 16, isQiraah: true, qiraahText: "فِي الحَدِيقَةِ الكَبِيرَةِ أَزْهَارٌ جَمِيلَةٌ. يَمْشِي الوَلَدُ الصَّالِحُ عَلَى الطَّرِيقِ النَّظِيفِ.", questionPrompt: "[Qira'ah 1/5] Tentukan Na'at dari kata 'الحَدِيقَةِ' pada kalimat pertama!", arabicText: "فِي الحَدِيقَةِ الكَبِيرَةِ", options: ["الكَبِيرَةِ", "أَزْهَارٌ", "جَمِيلَةٌ", "الصَّالِحُ"], correctIndex: 0, analysis: "'الكَبِيرَةِ' adalah Na'at yang majrur mengikuti Man'ut 'الحَدِيقَةِ'." },
+          { id: 17, isQiraah: true, qiraahText: "فِي الحَدِيقَةِ الكَبِيرَةِ أَزْهَارٌ جَمِيلَةٌ. يَمْشِي الوَلَدُ الصَّالِحُ عَلَى الطَّرِيقِ النَّظِيفِ.", questionPrompt: "[Qira'ah 2/5] Tentukan Na'at dari kata 'أَزْهَارٌ' (bunga-bunga)!", arabicText: "أَزْهَارٌ جَمِيلَةٌ", options: ["جَمِيلَةٌ", "الكَبِيرَةِ", "الواَسِعَةِ", "الصَّالِحُ"], correctIndex: 0, analysis: "'جَمِيلَةٌ' adalah Na'at Nakirah Muannats yang menyifati Jamak tidak berakal 'أَزْهَارٌ'." },
+          { id: 18, isQiraah: true, qiraahText: "فِي الحَدِيقَةِ الكَبِيرَةِ أَزْهَارٌ جَمِيلَةٌ. يَمْشِي الوَلَدُ الصَّالِحُ عَلَى الطَّرِيقِ النَّظِيفِ.", questionPrompt: "[Qira'ah 3/5] Apakah sifat dari anak laki-laki ('الوَلَدُ') dalam bacaan?", arabicText: "الوَلَدُ الصَّالِحُ", options: ["Anak yang shalih (الصَّالِحُ)", "Anak yang rajin", "Anak yang pandai", "Anak yang besar"], correctIndex: 0, analysis: "Dalam bacaan tersurat Na'at 'الصَّالِحُ' (yang shalih)." },
+          { id: 19, isQiraah: true, qiraahText: "فِي الحَدِيقَةِ الكَبِيرَةِ أَزْهَارٌ جَمِيلَةٌ. يَمْشِي الوَلَدُ الصَّالِحُ عَلَى الطَّرِيقِ النَّظِيفِ.", questionPrompt: "[Qira'ah 4/5] Tentukan Man'ut dari Na'at 'النَّظِيفِ'!", arabicText: "عَلَى الطَّرِيقِ النَّظِيفِ", options: ["الطَّرِيقِ", "الوَلَدُ", "الحَدِيقَةِ", "أَزْهَارٌ"], correctIndex: 0, analysis: "'الطَّرِيقِ' (jalan) adalah kata benda yang disifati (Man'ut)." },
+          { id: 20, isQiraah: true, qiraahText: "فِي الحَدِيقَةِ الكَبِيرَةِ أَزْهَارٌ جَمِيلَةٌ. يَمْشِي الوَلَدُ الصَّالِحُ عَلَى الطَّرِيقِ النَّظِيفِ.", questionPrompt: "[Qira'ah 5/5] Berapakah jumlah pasangan Na'at Man'ut dalam teks di atas?", arabicText: "الكَبِيرَةِ - جَمِيلَةٌ - الصَّالِحُ - النَّظِيفِ", options: ["4 Pasang Na'at Man'ut", "2 Pasang", "1 Pasang", "5 Pasang"], correctIndex: 0, analysis: "Ada 4 pasang Na'at Man'ut: الحَدِيقَةِ الكَبِيرَةِ, أَزْهَارٌ جَمِيلَةٌ, الوَلَدُ الصَّالِحُ, الطَّرِيقِ النَّظِيفِ." }
+        ],
+
+        // TEMA 6: Isim Tafdhil (20 Soal Spesifik)
+        tema06: [
+          { id: 1, isQiraah: false, questionPrompt: "Bentuk ISIM TAFDHIL (Komparatif/Superlatif) dalam Bahasa Arab mengikuti wazan (pola):", arabicText: "وَزْنُ إِسْمِ التَّفْضِيلِ", options: ["أَفْعَلُ", "فَاعِلٌ", "مَفْعُولٌ", "فَعِيلٌ"], correctIndex: 0, analysis: "Isim Tafdhil standar berpola/berwazan 'أَفْعَلُ' (seperti أَكْبَرُ, أَجْمَلُ)." },
+          { id: 2, isQiraah: false, questionPrompt: "Terjemahkan Isim Tafdhil pembanding: 'العِلْمُ أَنْفَعُ مِنَ المَالِ'", arabicText: "العِلْمُ أَنْفَعُ مِنَ المَالِ", options: ["Ilmu lebih bermanfaat daripada harta", "Harta lebih bermanfaat dari ilmu", "Ilmu dan harta sama bermanfaat", "Mencari ilmu dengan harta"], correctIndex: 0, analysis: "'أَنْفَعُ' = lebih bermanfaat, 'مِنَ' = daripada." },
+          { id: 3, isQiraah: false, questionPrompt: "Ubah kata sifat 'كَبِيرٌ' (Besar) ke bentuk Isim Tafdhil (Lebih Besar):", arabicText: "كَبِيرٌ -> ...", options: ["أَكْبَرُ", "كُبْرَى", "كَبِيرَةٌ", "تَكْبِيرٌ"], correctIndex: 0, analysis: "Bentuk Isim Tafdhil dari كَبِيرٌ mengikuti wazan أَفْعَلُ menjadi 'أَكْبَرُ'." },
+          { id: 4, isQiraah: false, questionPrompt: "Ubah kata sifat 'جَمِيلٌ' (Indah) ke bentuk Isim Tafdhil (Lebih Indah):", arabicText: "جَمِيلٌ -> ...", options: ["أَجْمَلُ", "جَمَالٌ", "جَمِيلَةٌ", "مَجْمُولٌ"], correctIndex: 0, analysis: "Bentuk Isim Tafdhil dari جَمِيلٌ adalah 'أَجْمَلُ'." },
+          { id: 5, isQiraah: false, questionPrompt: "Terjemahkan ke Bahasa Arab: 'Gajah lebih besar daripada kucing'", arabicText: "تَرْجِمْ: Gajah lebih besar dari kucing", options: ["A. الفِيلُ أَكْبَرُ مِنَ القِطِّ", "B. الفِيلُ كَبِيرٌ مِنَ القِطِّ", "C. القِطُّ أَكْبَرُ مِنَ الفِيلِ", "D. الفِيلُ أَجْمَلُ مِنَ القِطِّ"], correctIndex: 0, analysis: "الفِيلُ (Gajah) + أَكْبَرُ (lebih besar) + مِنَ القِطِّ (daripada kucing)." },
+          { id: 6, isQiraah: false, questionPrompt: "Kata harf yang digunakan setelah Isim Tafdhil untuk menyatakan pembanding 'daripada' adalah:", arabicText: "حَرْفُ المَقَارَنَةِ بَعْدَ إِسْمِ التَّفْضِيلِ", options: ["مِنْ (Daripada)", "إِلَى", "عَلَى", "فِي"], correctIndex: 0, analysis: "Harf 'مِنْ' dipakai setelah Isim Tafdhil untuk bermakna 'daripada' (komparatif)." },
+          { id: 7, isQiraah: false, questionPrompt: "Manakah kata berikut yang BUKAN merupakan Isim Tafdhil?", arabicText: "اخْتَرْ الكَلِمَةَ الغَرِيبَةَ", options: ["A. أُسْتَاذٌ", "B. أَكْبَرُ", "C. أَصْغَرُ", "D. أَحْسَنُ"], correctIndex: 0, analysis: "'أُسْتَاذٌ' adalah Isim Alam/Benda, sedangkan sisanya berwazan أَفْعَلُ (Isim Tafdhil)." },
+          { id: 8, isQiraah: false, questionPrompt: "Ubah kata sifat 'صَغِيرٌ' (Kecil) ke Isim Tafdhil (Lebih Kecil):", arabicText: "صَغِيرٌ -> ...", options: ["أَصْغَرُ", "صَغِيرَةٌ", "تَصْغِيرٌ", "صِغَارٌ"], correctIndex: 0, analysis: "Bentuk Isim Tafdhil dari صَغِيرٌ adalah 'أَصْغَرُ'." },
+          { id: 9, isQiraah: false, questionPrompt: "Terjemahkan makna kalimat superlatif: "المَسْجِدُ الحَرَامُ أَكْبَرُ مَسْجِدٍ"", arabicText: "المَسْجِدُ الحَرَامُ أَكْبَرُ مَسْجِدٍ", options: ["Masjidil Haram adalah masjid terbesar", "Masjidil Haram itu besar", "Masjid terbesar di kota", "Masjidil Haram lebih kecil"], correctIndex: 0, analysis: "Isim Tafdhil disandarkan ke isim nakirah bermakna Superlatif (Terbesar/Paling Besar)." },
+          { id: 10, isQiraah: false, questionPrompt: "Isim Tafdhil bentuk Muannats (perempuan) dari 'أَكْبَرُ' adalah:", arabicText: "مُؤَنَّثُ أَكْبَرُ", options: ["كُبْرَى", "كَبِيرَةٌ", "أَكْبَرَةٌ", "كِبَارٌ"], correctIndex: 0, analysis: "Bentuk Muannats dari wazan أَفْعَلُ adalah فُعْلَى (seperti 'كُبْرَى')." },
+          { id: 11, isQiraah: false, questionPrompt: "Lengkapi kalimat: 'الشَّمْسُ ... مِنَ القَمَرِ' (Matahari lebih terang)", arabicText: "الشَّمْسُ ... مِنَ القَمَرِ", options: ["أَضْوَأُ", "ضَوْءٌ", "مُضِيئَةٌ", "شَمْسٌ"], correctIndex: 0, analysis: "'أَضْوَأُ' berwazan أَفْعَلُ bermakna 'lebih terang'." },
+          { id: 12, isQiraah: false, questionPrompt: "Terjemahkan frasa 'أَحْسَنُ تَقْوِيمٍ' dalam Surah At-Tin:", arabicText: "فِي أَحْسَنِ تَقْوِيمٍ", options: ["Bentuk yang sebaik-baiknya / paling baik", "Bentuk yang biasa", "Bentuk yang bagus", "Bentuk manusia"], correctIndex: 0, analysis: "'أَحْسَنُ' adalah Isim Tafdhil yang bermakna sebaik-baiknya/paling baik." },
+          { id: 13, isQiraah: false, questionPrompt: "Manakah kalimat komparatif yang TEPAT di bawah ini?", arabicText: "اخْتَرْ الجُمْلَةَ الصَّحِيحَةَ", options: ["A. الطَّائِرَةُ أَسْرَعُ مِنَ السَّيَّارَةِ", "B. الطَّائِرَةُ سَرِيعٌ مِنَ السَّيَّارَةِ", "C. الطَّائِرَةُ أَسْرَعَ مِنَ السَّيَّارَةِ", "D. الطَّائِرَةُ سَرِيعَةٌ مِنَ السَّيَّارَةِ"], correctIndex: 0, analysis: "'أَسْرَعُ' (lebih cepat) + 'مِنَ' (daripada)." },
+          { id: 14, isQiraah: false, questionPrompt: "Ubah kata 'كَبِيرٌ' menjadi Isim Tafdhil superlatif (Paling Luas/Besar):", arabicText: "أَوْسَعُ مَدِينَةٍ", options: ["Kota terluas", "Kota yang luas", "Kota besar", "Di dalam kota"], correctIndex: 0, analysis: "'أَوْسَعُ' + Nakirah = Kota terluas / paling luas." },
+          { id: 15, isQiraah: false, questionPrompt: "Analisis kata 'أَفْضَلُ' dalam kalimat 'الصَّلاَةُ أَفْضَلُ مِنَ النَّوْمِ':", arabicText: "الصَّلاَةُ أَفْضَلُ مِنَ النَّوْمِ", options: ["Isim Tafdhil berkedudukan sebagai Khabar", "Fi'il Madhi", "Fa'il", "Harf Jar"], correctIndex: 0, analysis: "'أَفْضَلُ' adalah Isim Tafdhil ber-i'rab Marfu' yang menempati posisi Khabar." },
+          { id: 16, isQiraah: true, qiraahText: "العِلْمُ أَنْفَعُ مِنَ المَالِ. وَالمَسْجِدُ الحَرَامُ أَكْبَرُ مَسْجِدٍ فِي العَالَمِ. وَالصَّلاَةُ أَفْضَلُ مِنَ النَّوْمِ.", questionPrompt: "[Qira'ah 1/5] Manakah Isim Tafdhil pada kalimat pertama?", arabicText: "العِلْمُ أَنْفَعُ مِنَ المَالِ", options: ["أَنْفَعُ", "العِلْمُ", "المَالِ", "مِنَ"], correctIndex: 0, analysis: "'أَنْفَعُ' adalah Isim Tafdhil berwazan أَفْعَلُ." },
+          { id: 17, isQiraah: true, qiraahText: "العِلْمُ أَنْفَعُ مِنَ المَالِ. وَالمَسْجِدُ الحَرَامُ أَكْبَرُ مَسْجِدٍ فِي العَالَمِ. وَالصَّلاَةُ أَفْضَلُ مِنَ النَّوْمِ.", questionPrompt: "[Qira'ah 2/5] Apakah arti perbandingan antara Ilmu dan Harta dalam bacaan?", arabicText: "العِلْمُ أَنْفَعُ مِنَ المَالِ", options: ["Ilmu lebih bermanfaat dari harta", "Harta lebih berharga dari ilmu", "Ilmu dan harta sama", "Harta paling utama"], correctIndex: 0, analysis: "Teks menyebutkan Ilmu lebih bermanfaat daripada harta." },
+          { id: 18, isQiraah: true, qiraahText: "العِلْمُ أَنْفَعُ مِنَ المَالِ. وَالمَسْجِدُ الحَرَامُ أَكْبَرُ مَسْجِدٍ فِي العَالَمِ. وَالصَّلاَةُ أَفْضَلُ مِنَ النَّوْمِ.", questionPrompt: "[Qira'ah 3/5] Manakah masjid terbesar di dunia menurut teks di atas?", arabicText: "المَسْجِدُ الحَرَامُ أَكْبَرُ مَسْجِدٍ", options: ["Masjidil Haram (المَسْجِدُ الحَرَامُ)", "Masjid Nabawi", "Masjid Aqsha", "Masjid Raya"], correctIndex: 0, analysis: "Teks menyebutkan Masjidil Haram adalah masjid terbesar di dunia." },
+          { id: 19, isQiraah: true, qiraahText: "العِلْمُ أَنْفَعُ مِنَ المَالِ. وَالمَسْجِدُ الحَرَامُ أَكْبَرُ مَسْجِدٍ فِي العَالَمِ. وَالصَّلاَةُ أَفْضَلُ مِنَ النَّوْمِ.", questionPrompt: "[Qira'ah 4/5] Tentukan Isim Tafdhil pada kalimat 'الصَّلاَةُ أَفْضَلُ مِنَ النَّوْمِ'!", arabicText: "الصَّلاَةُ أَفْضَلُ مِنَ النَّوْمِ", options: ["أَفْضَلُ", "الصَّلاَةُ", "النَّوْمِ", "مِنَ"], correctIndex: 0, analysis: "'أَفْضَلُ' (lebih utama) adalah Isim Tafdhil." },
+          { id: 20, isQiraah: true, qiraahText: "العِلْمُ أَنْفَعُ مِنَ المَالِ. وَالمَسْجِدُ الحَرَامُ أَكْبَرُ مَسْجِدٍ فِي العَالَمِ. وَالصَّلاَةُ أَفْضَلُ مِنَ النَّوْمِ.", questionPrompt: "[Qira'ah 5/5] Berapakah total kata Isim Tafdhil dalam paragraf di atas?", arabicText: "أَنْفَعُ - أَكْبَرُ - أَفْضَلُ", options: ["3 Kata Isim Tafdhil", "1 Kata", "5 Kata", "Tidak ada"], correctIndex: 0, analysis: "Ada 3 kata Isim Tafdhil berwazan أَفْعَلُ: أَنْفَعُ, أَكْبَرُ, dan أَفْضَلُ." }
+        ]
+      };
+    }
+
+    // GAME DATABASE FOR ALL 6 THEMES (10 LEVELS EACH)
+    const GAME_DATABASE = {
+      tema01: [
+        { level: 1, words: ["مُجْتَهِدٌ", "الطَّالِبُ"], correct: "الطَّالِبُ مُجْتَهِدٌ", hint: "Mubtada' + Khabar" },
+        { level: 2, words: ["نَظِيفَةٌ", "المَدْرَسَةُ"], correct: "المَدْرَسَةُ نَظِيفَةٌ", hint: "Mubtada' muannats" },
+        { level: 3, words: ["مَاهِرٌ", "المُعَلِّمُ"], correct: "المُعَلِّمُ مَاهِرٌ", hint: "Mubtada' mudzakkar" },
+        { level: 4, words: ["فِي", "الفَصْلِ", "الطَّالِبُ"], correct: "الطَّالِبُ فِي الفَصْلِ", hint: "3 kata" },
+        { level: 5, words: ["كَبِيرَةٌ", "جِدًّا", "الحَدِيقَةُ"], correct: "الحَدِيقَةُ كَبِيرَةٌ جِدًّا", hint: "3 kata" },
+        { level: 6, words: ["نَشِيطَانِ", "الطَّالِبَانِ", "فِي", "المَلْعَبِ"], correct: "الطَّالِبَانِ نَشِيطَانِ فِي المَلْعَبِ", hint: "4 kata" },
+        { level: 7, words: ["مُجْتَهِدُونَ", "فِي", "عَمَلِهِمْ", "المُعَلِّمُونَ"], correct: "المُعَلِّمُونَ مُجْتَهِدُونَ فِي عَمَلِهِمْ", hint: "4 kata" },
+        { level: 8, words: ["الصَّادِقُ", "مَحْبُوبٌ", "عِنْدَ", "النَّاسِ"], correct: "الصَّادِقُ مَحْبُوبٌ عِنْدَ النَّاسِ", hint: "4 kata" },
+        { level: 9, words: ["العِلْمُ", "نُورٌ", "يَهْدِي", "إِلَى", "الحَقِّ"], correct: "العِلْمُ نُورٌ يَهْدِي إِلَى الحَقِّ", hint: "5 kata" },
+        { level: 10, words: ["القِرَاءَةُ", "مُفِيدَةٌ", "لِلْعَقْلِ", "وَالرُّوحِ", "دَائِمًا"], correct: "القِرَاءَةُ مُفِيدَةٌ لِلْعَقْلِ وَالرُّوحِ دَائِمًا", hint: "5 kata" }
+      ],
+      tema02: getGenericGameLevels("Fi'il Fa'il"),
+      tema03: getGenericGameLevels("Zharaf"),
+      tema04: getGenericGameLevels("Idhafah"),
+      tema05: getGenericGameLevels("Naat"),
+      tema06: getGenericGameLevels("Tafdhil")
+    };
+
+    function getGenericGameLevels(type) {
+      return [
+        { level: 1, words: ["صَبَاحًا", "سَافَرْتُ"], correct: "سَافَرْتُ صَبَاحًا", hint: "2 kata" },
+        { level: 2, words: ["فَوْقَ", "الكِتَابُ", "المَكْتَبِ"], correct: "الكِتَابُ فَوْقَ المَكْتَبِ", hint: "3 kata" },
+        { level: 3, words: ["أَمَامَ", "يَقِفُ", "المَسْجِدِ"], correct: "يَقِفُ أَمَامَ المَسْجِدِ", hint: "3 kata" },
+        { level: 4, words: ["لَيْلًا", "يَنَامُ", "الطِّفْلُ"], correct: "يَنَامُ الطِّفْلُ لَيْلًا", hint: "3 kata" },
+        { level: 5, words: ["بَيْنَ", "البَيْتُ", "المَسْجِدِ", "وَالمَدْرَسَةِ"], correct: "البَيْتُ بَيْنَ المَسْجِدِ وَالمَدْرَسَةِ", hint: "4 kata" },
+        { level: 6, words: ["تَحْتَ", "يَجْلِسُ", "الوَلَدُ", "الشَّجَرَةِ"], correct: "يَجْلِسُ الوَلَدُ تَحْتَ الشَّجَرَةِ", hint: "4 kata" },
+        { level: 7, words: ["مَسَاءً", "يَرْجِعُ", "العَامِلُ", "مِنَ", "العَمَلِ"], correct: "يَرْجِعُ العَامِلُ مِنَ العَمَلِ مَسَاءً", hint: "5 kata" },
+        { level: 8, words: ["خَلْفَ", "يَمْشِي", "الرَّجُلُ", "الإِمَامِ"], correct: "يَمْشِي الرَّجُلُ خَلْفَ الإِمَامِ", hint: "4 kata" },
+        { level: 9, words: ["يَوْمَ", "نَصُومُ", "الاِثْنَيْنِ", "تَطَوُّعًا"], correct: "نَصُومُ يَوْمَ الاِثْنَيْنِ تَطَوُّعًا", hint: "4 kata" },
+        { level: 10, words: ["أَمَامَ", "يَقِفُ", "المُعَلِّمُ", "التَّلاَمِيذِ", "فِي", "الفَصْلِ"], correct: "يَقِفُ المُعَلِّمُ أَمَامَ التَّلاَمِيذِ فِي الفَصْلِ", hint: "6 kata" }
+      ];
+    }
+
+    let QUIZ_DB = buildQuizDatabase();
+
+    function getDefaultUsers() {
+      return [
+        { name: 'Ahmad', email: 'ahmad@gmail.com', password: '123', role: 'murid', xp: 20, quizProgress: { tema01: 5 } },
+        { name: 'Ustaz Guru', email: 'guru@gmail.com', password: '123', role: 'guru', xp: 0, quizProgress: {} }
+      ];
+    }
+
+    let state = {
+      users: [],
+      currentUser: null,
+      currentThemeId: null,
+      currentQuizIndex: 0,
+      userAnswers: {},
+      currentGameLevel: 1,
+      selectedGameWords: []
+    };
+
+    function initUserDatabase() {
+      const storedUsers = localStorage.getItem('al_users');
+      if (storedUsers) {
+        try {
+          state.users = JSON.parse(storedUsers);
+        } catch (err) {
+          state.users = getDefaultUsers();
+          localStorage.setItem('al_users', JSON.stringify(state.users));
+        }
+      } else {
+        state.users = getDefaultUsers();
+        localStorage.setItem('al_users', JSON.stringify(state.users));
+      }
+
+      const storedCurrent = localStorage.getItem('al_current_user');
+      if (storedCurrent) {
+        try {
+          state.currentUser = JSON.parse(storedCurrent);
+        } catch (err) {
+          state.currentUser = null;
+        }
+      }
+    }
+
+    function syncStorage() {
+      localStorage.setItem('al_users', JSON.stringify(state.users));
+      if (state.currentUser) {
+        const idx = state.users.findIndex(u => u.email.toLowerCase() === state.currentUser.email.toLowerCase());
+        if (idx !== -1) {
+          state.users[idx] = state.currentUser;
+          localStorage.setItem('al_users', JSON.stringify(state.users));
+        }
+        localStorage.setItem('al_current_user', JSON.stringify(state.currentUser));
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      lucide.createIcons();
+      initUserDatabase();
+
+      if (state.currentUser) {
+        const found = state.users.find(u => u.email.toLowerCase() === state.currentUser.email.toLowerCase());
+        if (found) {
+          state.currentUser = found;
+          navigateTo(state.currentUser.role === 'guru' ? 'teacher' : 'dashboard');
+        } else {
+          navigateTo('auth');
+        }
+      } else {
+        navigateTo('auth');
+      }
+    });
+
+    function switchAuthTab(tab) {
+      const loginForm = document.getElementById('loginForm');
+      const regForm = document.getElementById('registerForm');
+      const tabLoginBtn = document.getElementById('tabLoginBtn');
+      const tabRegBtn = document.getElementById('tabRegisterBtn');
+
+      if (tab === 'login') {
+        loginForm.classList.remove('hidden');
+        regForm.classList.add('hidden');
+        tabLoginBtn.className = "flex-1 py-3 text-center border-b-2 border-blue-500 text-blue-400 transition";
+        tabRegBtn.className = "flex-1 py-3 text-center border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition";
+      } else {
+        loginForm.classList.add('hidden');
+        regForm.classList.remove('hidden');
+        tabRegBtn.className = "flex-1 py-3 text-center border-b-2 border-blue-500 text-blue-400 transition";
+        tabLoginBtn.className = "flex-1 py-3 text-center border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition";
+      }
+    }
+
+    function handleLogin(e) {
+      e.preventDefault();
+      initUserDatabase();
+
+      const idInput = document.getElementById('loginIdentifier').value.trim().toLowerCase();
+      const passInput = document.getElementById('loginPassword').value.trim();
+
+      const user = state.users.find(u => 
+        (u.email.toLowerCase() === idInput || u.name.toLowerCase() === idInput) && u.password === passInput
+      );
+
+      if (user) {
+        state.currentUser = user;
+        syncStorage();
+        navigateTo(user.role === 'guru' ? 'teacher' : 'dashboard');
+      } else {
+        alert("Email/Nama atau kata sandi salah!\n\nAtau klik 'Reset Ulang Data Akun' di bawah jika masih terhalang data lama.");
+      }
+    }
+
+    function handleRegister(e) {
+      e.preventDefault();
+      initUserDatabase();
+
+      const role = document.querySelector('input[name="regRole"]:checked').value;
+      const name = document.getElementById('regName').value.trim();
+      const email = document.getElementById('regEmail').value.trim();
+      const password = document.getElementById('regPassword').value.trim();
+
+      if (state.users.some(u => u.email.toLowerCase() === email.toLowerCase())) {
+        alert("Email ini sudah terdaftar! Silakan langsung masuk.");
+        return;
+      }
+
+      const newUser = { name, email, password, role, xp: 0, quizProgress: {} };
+      state.users.push(newUser);
+      localStorage.setItem('al_users', JSON.stringify(state.users));
+
+      alert("Registrasi Berhasil! Silakan masuk menggunakan email dan password yang baru dibuat.");
+      e.target.reset();
+      switchAuthTab('login');
+    }
+
+    function handleLogout() {
+      state.currentUser = null;
+      localStorage.removeItem('al_current_user');
+      navigateTo('auth');
+    }
+
+    function handleResetAllData() {
+      if (confirm("Reset seluruh data localstorage? Ini akan menghapus data sesi lama dan mengembalikan akun default (Ahmad & Ustaz Guru).")) {
+        localStorage.clear();
+        state.users = getDefaultUsers();
+        localStorage.setItem('al_users', JSON.stringify(state.users));
+        location.reload();
+      }
+    }
+
+    function openForgotPasswordModal() { document.getElementById('forgotPasswordModal').classList.remove('hidden'); }
+    function closeForgotPasswordModal() { document.getElementById('forgotPasswordModal').classList.add('hidden'); }
+
+    function handleForgotPassword(e) {
+      e.preventDefault();
+      const email = document.getElementById('resetEmail').value.trim();
+      const newPass = document.getElementById('resetNewPassword').value.trim();
+      const user = state.users.find(u => u.email.toLowerCase() === email.toLowerCase());
+      if (user) {
+        user.password = newPass;
+        syncStorage();
+        alert("Sandi berhasil diubah! Silakan login kembali.");
+        closeForgotPasswordModal();
+      } else {
+        alert("Email tidak ditemukan.");
+      }
+    }
+
+    function navigateTo(view) {
+      document.getElementById('authSection').classList.add('hidden');
+      document.getElementById('studentDashboard').classList.add('hidden');
+      document.getElementById('teacherDashboard').classList.add('hidden');
+      document.getElementById('quizSection').classList.add('hidden');
+      document.getElementById('gameSection').classList.add('hidden');
+
+      const navUserArea = document.getElementById('navUserArea');
+
+      if (state.currentUser) {
+        navUserArea.classList.remove('hidden');
+        navUserArea.classList.add('flex');
+        document.getElementById('navUserName').textContent = state.currentUser.name;
+        document.getElementById('navUserXp').textContent = `${state.currentUser.xp || 0} XP`;
+        
+        const isGuru = state.currentUser.role === 'guru';
+        document.getElementById('navRoleBadge').textContent = isGuru ? "👨‍🏫 Guru / Ustaz" : "👨‍🎓 Murid";
+      } else {
+        navUserArea.classList.add('hidden');
+      }
+
+      if (view === 'auth') document.getElementById('authSection').classList.remove('hidden');
+      else if (view === 'dashboard') { document.getElementById('studentDashboard').classList.remove('hidden'); renderStudentDashboard(); }
+      else if (view === 'teacher') { document.getElementById('teacherDashboard').classList.remove('hidden'); renderTeacherDashboard(); }
+      else if (view === 'quiz') { document.getElementById('quizSection').classList.remove('hidden'); renderQuizQuestion(); }
+      else if (view === 'game') { document.getElementById('gameSection').classList.remove('hidden'); initGameLevel(); }
+
+      lucide.createIcons();
+    }
+
+    function renderStudentDashboard() {
+      document.getElementById('dashUserName').textContent = state.currentUser.name;
+      document.getElementById('dashUserXp').textContent = state.currentUser.xp || 0;
+
+      const grid = document.getElementById('themeGrid');
+      grid.innerHTML = '';
+
+      CURRICULUM.forEach((theme) => {
+        const userProg = state.currentUser.quizProgress || {};
+        const lastIndex = userProg[theme.id] !== undefined ? userProg[theme.id] : 0;
+
+        const card = document.createElement('div');
+        card.className = "glass-card rounded-3xl p-6 border border-blue-800/40 hover:border-blue-500/60 transition flex flex-col justify-between space-y-5";
+        card.innerHTML = `
+          <div class="space-y-3">
+            <span class="text-xs font-extrabold text-cyan-400 bg-cyan-500/10 px-3 py-1 rounded-full border border-cyan-500/20">${theme.id.toUpperCase()}</span>
+            <h4 class="text-lg font-bold text-white">${theme.title}</h4>
+            <p class="font-arabic text-2xl text-blue-200 rtl">${theme.titleAr}</p>
+            <p class="text-xs text-slate-300">${theme.desc}</p>
+          </div>
+          <div class="pt-4 border-t border-slate-800 space-y-2">
+            <div class="flex justify-between text-xs text-slate-400">
+              <span>Progres Kuis:</span>
+              <span class="font-bold text-slate-200">${lastIndex} / 20 Selesai</span>
+            </div>
+            <div class="grid grid-cols-2 gap-2">
+              <button onclick="startQuiz('${theme.id}')" class="py-2 px-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold shadow">Mulai Kuis</button>
+              <button onclick="startGame('${theme.id}')" class="py-2 px-3 rounded-xl bg-cyan-600/30 text-cyan-200 border border-cyan-500/40 text-xs font-bold">Mini Game</button>
+            </div>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function renderTeacherDashboard() {
+      initUserDatabase();
+
+      const tbody = document.getElementById('teacherTableBody');
+      tbody.innerHTML = '';
+
+      const students = state.users.filter(u => u.role === 'murid');
+
+      if (students.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" class="px-6 py-8 text-center text-slate-500">Belum ada akun murid yang terdaftar.</td></tr>`;
+        return;
+      }
+
+      students.forEach((s, idx) => {
+        const prog = s.quizProgress || {};
+        let details = [];
+        for (const [tId, pVal] of Object.entries(prog)) {
+          details.push(`${tId.toUpperCase()}: ${pVal}/20 Soal`);
+        }
+        const progString = details.length > 0 ? details.join(' | ') : 'Belum mulai';
+
+        const tr = document.createElement('tr');
+        tr.className = "hover:bg-slate-900/50 transition";
+        tr.innerHTML = `
+          <td class="px-6 py-4 font-bold text-slate-400">${idx + 1}</td>
+          <td class="px-6 py-4 font-bold text-slate-100 flex items-center space-x-2"><span>👨‍🎓</span><span>${s.name}</span></td>
+          <td class="px-6 py-4 text-slate-400">${s.email}</td>
+          <td class="px-6 py-4"><span class="text-amber-400 font-extrabold bg-amber-500/10 px-2.5 py-1 rounded-full border border-amber-500/20 text-xs">⚡ ${s.xp || 0} XP</span></td>
+          <td class="px-6 py-4 text-xs font-semibold text-cyan-300">${progString}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+      lucide.createIcons();
+    }
+
+    function startQuiz(themeId) {
+      state.currentThemeId = themeId;
+      const userProg = state.currentUser.quizProgress || {};
+      state.currentQuizIndex = userProg[themeId] !== undefined ? Math.min(userProg[themeId], (QUIZ_DB[themeId].length - 1)) : 0;
+      navigateTo('quiz');
+    }
+
+    function renderQuizQuestion() {
+      const theme = CURRICULUM.find(t => t.id === state.currentThemeId);
+      const questions = QUIZ_DB[state.currentThemeId] || QUIZ_DB['tema01'];
+      const q = questions[state.currentQuizIndex] || questions[0];
+
+      document.getElementById('quizThemeTitle').textContent = theme.title;
+      document.getElementById('quizThemeSub').textContent = `Soal ${state.currentQuizIndex + 1} dari ${questions.length}`;
+      document.getElementById('quizProgressNum').textContent = `${state.currentQuizIndex + 1} / ${questions.length}`;
+
+      const qiraahBox = document.getElementById('qiraahBox');
+      if (q.isQiraah) {
+        qiraahBox.classList.remove('hidden');
+        document.getElementById('qiraahText').textContent = q.qiraahText;
+      } else {
+        qiraahBox.classList.add('hidden');
+      }
+
+      document.getElementById('questionTitle').textContent = q.questionPrompt;
+      document.getElementById('arabicQuestionText').textContent = q.arabicText;
+
+      const optContainer = document.getElementById('optionsContainer');
+      optContainer.innerHTML = '';
+
+      const themeAnswers = (state.userAnswers[state.currentThemeId] = state.userAnswers[state.currentThemeId] || {});
+      const previousAnswer = themeAnswers[state.currentQuizIndex];
+
+      q.options.forEach((optText, optIdx) => {
+        const btn = document.createElement('button');
+        btn.onclick = () => selectQuizAnswer(optIdx);
+
+        let borderClass = "border-slate-800 hover:border-blue-500 bg-slate-900/80";
+        if (previousAnswer !== undefined) {
+          if (optIdx === q.correctIndex) borderClass = "border-emerald-500 bg-emerald-500/10 text-emerald-300 font-bold";
+          else if (optIdx === previousAnswer) borderClass = "border-rose-500 bg-rose-500/10 text-rose-300";
+        }
+
+        btn.className = `w-full p-4 rounded-2xl border text-center transition flex items-center justify-center space-x-3 ${borderClass}`;
+        btn.innerHTML = `<span class="w-7 h-7 rounded-full bg-slate-800 text-slate-300 text-xs font-bold flex items-center justify-center">${['أ', 'ب', 'ج', 'د'][optIdx]}</span><span class="font-arabic text-xl text-slate-100 rtl">${optText}</span>`;
+        optContainer.appendChild(btn);
+      });
+
+      const feedbackCard = document.getElementById('feedbackCard');
+      if (previousAnswer !== undefined) {
+        feedbackCard.classList.remove('hidden');
+        const isCorrect = previousAnswer === q.correctIndex;
+        feedbackCard.className = isCorrect ? "rounded-2xl p-5 border bg-emerald-950/40 border-emerald-500/40 text-emerald-200" : "rounded-2xl p-5 border bg-rose-950/40 border-rose-500/40 text-rose-200";
+        document.getElementById('feedbackIcon').textContent = isCorrect ? "✓" : "✕";
+        document.getElementById('feedbackTitle').textContent = isCorrect ? "Jawaban Benar! (+10 XP)" : "Jawaban Kurang Tepat";
+        document.getElementById('feedbackAnalysis').textContent = q.analysis;
+      } else {
+        feedbackCard.classList.add('hidden');
+      }
+    }
+
+    function selectQuizAnswer(optIndex) {
+      const questions = QUIZ_DB[state.currentThemeId] || QUIZ_DB['tema01'];
+      const q = questions[state.currentQuizIndex];
+      const themeAnswers = (state.userAnswers[state.currentThemeId] = state.userAnswers[state.currentThemeId] || {});
+      const alreadyAnswered = themeAnswers[state.currentQuizIndex] !== undefined;
+
+      themeAnswers[state.currentQuizIndex] = optIndex;
+
+      if (!alreadyAnswered && optIndex === q.correctIndex) {
+        state.currentUser.xp = (state.currentUser.xp || 0) + 10;
+      }
+
+      state.currentUser.quizProgress = state.currentUser.quizProgress || {};
+      state.currentUser.quizProgress[state.currentThemeId] = Math.max(
+        state.currentUser.quizProgress[state.currentThemeId] || 0,
+        state.currentQuizIndex + 1
+      );
+
+      syncStorage();
+      renderQuizQuestion();
+    }
+
+    function navigateQuiz(dir) {
+      const questions = QUIZ_DB[state.currentThemeId] || QUIZ_DB['tema01'];
+      const newIdx = state.currentQuizIndex + dir;
+      if (newIdx >= 0 && newIdx < questions.length) {
+        state.currentQuizIndex = newIdx;
+        renderQuizQuestion();
+      } else if (newIdx >= questions.length) {
+        alert("Selamat! Anda telah menyelesaikan 20 soal kuis pada tema ini.");
+        navigateTo('dashboard');
+      }
+    }
+
+    function startGame(themeId) {
+      state.currentThemeId = themeId;
+      state.currentGameLevel = 1;
+      navigateTo('game');
+    }
+
+    function initGameLevel() {
+      const levels = GAME_DATABASE[state.currentThemeId] || GAME_DATABASE['tema01'];
+      const currentData = levels[state.currentGameLevel - 1] || levels[0];
+
+      document.getElementById('gameTitle').textContent = `Mini Game Interaktif (Level ${state.currentGameLevel})`;
+      document.getElementById('gameLevelDisplay').textContent = `${state.currentGameLevel} / 10`;
+      document.getElementById('gameFeedback').classList.add('hidden');
+      document.getElementById('nextGameLevelBtn').classList.add('hidden');
+
+      state.selectedGameWords = [];
+      const gameArea = document.getElementById('gameArea');
+      gameArea.innerHTML = `
+        <div id="wordTargetArea" class="w-full min-h-[70px] bg-slate-900 border-2 border-dashed border-cyan-500/40 rounded-2xl p-4 flex flex-wrap items-center justify-center gap-3 rtl">
+          <span class="text-xs text-slate-500">Klik kata di bawah untuk menyusun kalimat...</span>
+        </div>
+        <div id="wordSourceArea" class="flex flex-wrap items-center justify-center gap-3 pt-4 rtl"></div>
+      `;
+
+      const sourceArea = document.getElementById('wordSourceArea');
+      [...currentData.words].sort(() => Math.random() - 0.5).forEach(w => {
+        const btn = document.createElement('button');
+        btn.className = "px-5 py-3 rounded-2xl bg-blue-900/60 border border-blue-500/40 text-cyan-100 font-arabic text-2xl";
+        btn.textContent = w;
+        btn.onclick = () => {
+          state.selectedGameWords.push(w);
+          btn.classList.add('opacity-30', 'pointer-events-none');
+          renderTargetWords();
+          checkGameSolution(currentData);
+        };
+        sourceArea.appendChild(btn);
+      });
+    }
+
+    function renderTargetWords() {
+      const targetArea = document.getElementById('wordTargetArea');
+      targetArea.innerHTML = '';
+      state.selectedGameWords.forEach((word) => {
+        const chip = document.createElement('span');
+        chip.className = "px-4 py-2 rounded-xl bg-cyan-600 text-white font-arabic text-xl";
+        chip.textContent = word;
+        targetArea.appendChild(chip);
+      });
+    }
+
+    function checkGameSolution(currentData) {
+      const userSentence = state.selectedGameWords.join(' ');
+      const feedback = document.getElementById('gameFeedback');
+      if (userSentence === currentData.correct) {
+        feedback.classList.remove('hidden');
+        feedback.className = "rounded-2xl p-4 text-center font-bold text-sm bg-emerald-950/60 text-emerald-200 border border-emerald-500/40";
+        feedback.innerHTML = "🎉 Jawaban Benar! (+15 XP)";
+        state.currentUser.xp = (state.currentUser.xp || 0) + 15;
+        syncStorage();
+        document.getElementById('nextGameLevelBtn').classList.remove('hidden');
+      }
+    }
+
+    function resetCurrentGameLevel() { initGameLevel(); }
+    function nextGameLevel() {
+      if (state.currentGameLevel < 10) {
+        state.currentGameLevel++;
+        initGameLevel();
+      } else {
+        alert("🏆 Selamat! Anda menyelesaikan 10 level game tema ini!");
+        navigateTo('dashboard');
+      }
+    }
+  </script>
+</body>
+</html>
