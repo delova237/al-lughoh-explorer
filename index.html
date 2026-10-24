@@ -1,0 +1,1570 @@
+<!DOCTYPE html>
+<html lang="id" dir="ltr" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Al-Lughah Explorer - LMS Gamifikasi Bahasa Arab</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#f0f7ff',
+              100: '#e0effe',
+              200: '#bae0fd',
+              500: '#0284c7',
+              600: '#0265d6',
+              700: '#1d4ed8',
+              800: '#1e40af',
+              900: '#1e3a8a',
+              dark: '#0b192c'
+            }
+          },
+          fontFamily: {
+            sans: ['Plus Jakarta Sans', 'sans-serif'],
+            arabic: ['Amiri', 'serif']
+          }
+        }
+      }
+    }
+  </script>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    .font-arabic { font-family: 'Amiri', serif; }
+    .rtl { direction: rtl; text-align: right; }
+    .ltr { direction: ltr; text-align: left; }
+    
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: #0f172a; }
+    ::-webkit-scrollbar-thumb { background: #1e3a8a; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #2563eb; }
+
+    /* Glassmorphic effect */
+    .glass-card {
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(59, 130, 246, 0.2);
+    }
+    
+    .glass-nav {
+      background: rgba(11, 25, 44, 0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(59, 130, 246, 0.2);
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans min-h-screen flex flex-col justify-between selection:bg-blue-600 selection:text-white">
+
+  <!-- ================= HEADER / NAVBAR ================= -->
+  <header class="sticky top-0 z-50 glass-nav shadow-lg border-b border-blue-900/40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      
+      <!-- Logo -->
+      <div class="flex items-center space-x-3 cursor-pointer" onclick="navigateTo('dashboard')">
+        <div class="w-11 h-11 rounded-xl bg-gradient-to-tr from-blue-700 to-cyan-500 flex items-center justify-center text-white font-black text-2xl shadow-lg shadow-blue-500/30">
+          <i data-lucide="book-open-check"></i>
+        </div>
+        <div>
+          <h1 class="text-xl font-extrabold tracking-tight bg-gradient-to-r from-blue-200 via-cyan-200 to-white bg-clip-text text-transparent">
+            Al-Lughah Explorer
+          </h1>
+          <p class="text-xs text-blue-400 font-medium">LMS Gamifikasi Nahwu & Shorof</p>
+        </div>
+      </div>
+
+      <!-- User Nav Profile / Dynamic Header -->
+      <div id="navUserArea" class="hidden items-center space-x-4">
+        <div class="hidden md:flex items-center bg-slate-900/80 border border-blue-800/50 px-3 py-1.5 rounded-full space-x-3">
+          <span id="navRoleBadge" class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-600/30 text-blue-300 border border-blue-500/30">
+            👨‍🎓 Murid
+          </span>
+          <span id="navUserName" class="text-sm font-semibold text-slate-200">Ahmad</span>
+          <div id="navXpContainer" class="flex items-center text-amber-400 text-xs font-extrabold bg-amber-500/10 px-2.5 py-1 rounded-full border border-amber-500/20">
+            <i data-lucide="zap" class="w-3.5 h-3.5 mr-1 fill-amber-400"></i>
+            <span id="navUserXp">0 XP</span>
+          </div>
+        </div>
+
+        <button onclick="handleLogout()" class="text-slate-400 hover:text-red-400 p-2 rounded-xl hover:bg-red-500/10 transition border border-transparent hover:border-red-500/30" title="Keluar">
+          <i data-lucide="log-out" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- ================= MAIN CONTAINER ================= -->
+  <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+    <!-- 1. AUTH PAGE (LOGIN & REGISTER & FORGOT PASSWORD) -->
+    <div id="authSection" class="max-w-md mx-auto my-8">
+      <div class="glass-card rounded-3xl p-8 shadow-2xl border border-blue-800/40 relative overflow-hidden">
+        
+        <!-- Subtle Glow -->
+        <div class="absolute -top-24 -right-24 w-48 h-48 bg-blue-600/20 rounded-full blur-3xl"></div>
+        <div class="absolute -bottom-24 -left-24 w-48 h-48 bg-cyan-600/20 rounded-full blur-3xl"></div>
+
+        <!-- Auth Tabs -->
+        <div class="flex border-b border-slate-800 mb-6 font-semibold">
+          <button id="tabLoginBtn" onclick="switchAuthTab('login')" class="flex-1 py-3 text-center border-b-2 border-blue-500 text-blue-400 transition">
+            Masuk
+          </button>
+          <button id="tabRegisterBtn" onclick="switchAuthTab('register')" class="flex-1 py-3 text-center border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition">
+            Daftar Baru
+          </button>
+        </div>
+
+        <!-- LOGIN FORM -->
+        <form id="loginForm" onsubmit="handleLogin(event)" class="space-y-4">
+          <div>
+            <label class="block text-xs font-medium text-slate-300 mb-1.5">Email atau Nama Pengguna</label>
+            <div class="relative">
+              <i data-lucide="user" class="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
+              <input type="text" id="loginIdentifier" required placeholder="Contoh: ahmad@gmail.com / Ahmad" class="w-full bg-slate-900/90 border border-slate-700/80 rounded-xl pl-10 pr-4 py-2.5 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500">
+            </div>
+          </div>
+
+          <div>
+            <div class="flex justify-between items-center mb-1.5">
+              <label class="block text-xs font-medium text-slate-300">Kata Sandi</label>
+              <button type="button" onclick="openForgotPasswordModal()" class="text-xs text-blue-400 hover:underline">
+                Lupa Sandi?
+              </button>
+            </div>
+            <div class="relative">
+              <i data-lucide="key-round" class="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
+              <input type="password" id="loginPassword" required placeholder="••••••••" class="w-full bg-slate-900/90 border border-slate-700/80 rounded-xl pl-10 pr-4 py-2.5 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500">
+            </div>
+          </div>
+
+          <button type="submit" class="w-full py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold rounded-xl shadow-lg shadow-blue-600/30 transition transform active:scale-95 flex items-center justify-center space-x-2 mt-6">
+            <span>Masuk ke Akun</span>
+            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+          </button>
+        </form>
+
+        <!-- REGISTER FORM -->
+        <form id="registerForm" onsubmit="handleRegister(event)" class="space-y-4 hidden">
+          <div>
+            <label class="block text-xs font-medium text-slate-300 mb-1.5">Pilih Peran Akun</label>
+            <div class="grid grid-cols-2 gap-3">
+              <label class="cursor-pointer">
+                <input type="radio" name="regRole" value="murid" checked class="peer sr-only">
+                <div class="p-3 rounded-xl bg-slate-900/80 border border-slate-800 peer-checked:border-blue-500 peer-checked:bg-blue-600/10 text-center transition">
+                  <div class="text-2xl mb-1">👨‍🎓</div>
+                  <div class="text-xs font-bold text-slate-200">Murid (Ath-Thalib)</div>
+                </div>
+              </label>
+
+              <label class="cursor-pointer">
+                <input type="radio" name="regRole" value="guru" class="peer sr-only">
+                <div class="p-3 rounded-xl bg-slate-900/80 border border-slate-800 peer-checked:border-blue-500 peer-checked:bg-blue-600/10 text-center transition">
+                  <div class="text-2xl mb-1">👨‍🏫</div>
+                  <div class="text-xs font-bold text-slate-200">Guru / Ustaz</div>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-medium text-slate-300 mb-1.5">Nama Lengkap</label>
+            <input type="text" id="regName" required placeholder="Ahmad Zaki" class="w-full bg-slate-900/90 border border-slate-700/80 rounded-xl px-4 py-2.5 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-blue-500">
+          </div>
+
+          <div>
+            <label class="block text-xs font-medium text-slate-300 mb-1.5">Alamat Email</label>
+            <input type="email" id="regEmail" required placeholder="ahmad@gmail.com" class="w-full bg-slate-900/90 border border-slate-700/80 rounded-xl px-4 py-2.5 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-blue-500">
+          </div>
+
+          <div>
+            <label class="block text-xs font-medium text-slate-300 mb-1.5">Kata Sandi</label>
+            <input type="password" id="regPassword" required placeholder="••••••••" class="w-full bg-slate-900/90 border border-slate-700/80 rounded-xl px-4 py-2.5 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-blue-500">
+          </div>
+
+          <button type="submit" class="w-full py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold rounded-xl shadow-lg shadow-blue-600/30 transition transform active:scale-95 flex items-center justify-center space-x-2 mt-6">
+            <span>Daftar Sekarang</span>
+            <i data-lucide="user-plus" class="w-4 h-4"></i>
+          </button>
+        </form>
+
+        <!-- System Reset Footer Button -->
+        <div class="mt-8 pt-6 border-t border-slate-800/80 text-center">
+          <button onclick="handleResetAllData()" class="inline-flex items-center text-xs text-red-400 hover:text-red-300 transition">
+            <i data-lucide="refresh-cw" class="w-3.5 h-3.5 mr-1.5"></i>
+            <span>Reset Ulang Browser / Cleared LocalStorage</span>
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- FORGOT PASSWORD MODAL -->
+    <div id="forgotPasswordModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+      <div class="glass-card max-w-sm w-full rounded-2xl p-6 border border-blue-500/30 relative">
+        <h3 class="text-lg font-bold text-slate-100 mb-2 flex items-center">
+          <i data-lucide="key-round" class="w-5 h-5 text-blue-400 mr-2"></i>
+          Riset Kata Sandi
+        </h3>
+        <p class="text-xs text-slate-400 mb-4">Masukkan email terdaftar Anda untuk mengatur ulang kata sandi baru.</p>
+
+        <form onsubmit="handleForgotPassword(event)" class="space-y-3">
+          <div>
+            <label class="block text-xs font-medium text-slate-300 mb-1">Email Terdaftar</label>
+            <input type="email" id="resetEmail" required placeholder="email@domain.com" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-slate-100 focus:border-blue-500 focus:outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-slate-300 mb-1">Kata Sandi Baru</label>
+            <input type="password" id="resetNewPassword" required placeholder="••••••••" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-slate-100 focus:border-blue-500 focus:outline-none">
+          </div>
+          <div class="flex justify-end space-x-2 pt-2">
+            <button type="button" onclick="closeForgotPasswordModal()" class="px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 text-slate-300 hover:bg-slate-700">
+              Batal
+            </button>
+            <button type="submit" class="px-4 py-1.5 rounded-lg text-xs font-bold bg-blue-600 hover:bg-blue-500 text-white shadow">
+              Simpan Sandi Baru
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+
+    <!-- 2. DASHBOARD MURID (STUDENT VIEW) -->
+    <div id="studentDashboard" class="hidden space-y-8">
+      
+      <!-- Welcome Banner -->
+      <div class="glass-card rounded-3xl p-6 sm:p-8 border border-blue-800/40 relative overflow-hidden bg-gradient-to-r from-blue-950/60 via-slate-900/90 to-indigo-950/60">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
+          <div>
+            <div class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-blue-500/20 text-blue-300 border border-blue-500/30 mb-3">
+              👨‍🎓 Ath-Thalib (Murid)
+            </div>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+              Selamat Belajar, <span id="dashUserName" class="text-cyan-400">Ahmad</span>!
+            </h2>
+            <p class="text-sm text-slate-300 mt-1 max-w-xl">
+              Pilih tema Nahwu & Shorof di bawah ini untuk memulai latihan bertahap, kuis evaluasi 20 soal variatif dengan analisis Nahwu, dan mini game interaktif!
+            </p>
+          </div>
+
+          <div class="flex items-center space-x-4 bg-slate-900/90 p-4 rounded-2xl border border-blue-800/50">
+            <div class="w-12 h-12 rounded-xl bg-amber-500/20 flex items-center justify-center text-amber-400 border border-amber-500/30">
+              <i data-lucide="trophy" class="w-6 h-6"></i>
+            </div>
+            <div>
+              <p class="text-xs text-slate-400 font-semibold uppercase tracking-wider">Total Skor XP</p>
+              <div class="text-2xl font-black text-amber-400 flex items-center">
+                <span id="dashUserXp">0</span>
+                <span class="text-xs ml-1 text-slate-400 font-normal">XP</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Curriculum Themes List (6 Themes) -->
+      <div>
+        <div class="flex items-center justify-between mb-6">
+          <h3 class="text-xl font-bold text-slate-100 flex items-center">
+            <i data-lucide="book-marked" class="w-6 h-6 text-blue-400 mr-2"></i>
+            Kurikulum Pembelajaran Nahwu
+          </h3>
+          <span class="text-xs text-blue-400 bg-blue-500/10 px-3 py-1 rounded-full font-semibold border border-blue-500/20">6 Tema Utama</span>
+        </div>
+
+        <div id="themeGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- Rendered dynamically by JS -->
+        </div>
+      </div>
+
+    </div>
+
+
+    <!-- 3. GURU MONITORING PANEL (TEACHER VIEW) -->
+    <div id="teacherDashboard" class="hidden space-y-8">
+      <div class="glass-card rounded-3xl p-6 sm:p-8 border border-indigo-800/40 bg-gradient-to-r from-indigo-950/60 via-slate-900/90 to-blue-950/60">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <div class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 mb-2">
+              👨‍🏫 Panel Pemantauan Guru / Ustaz
+            </div>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-white">Daftar Progres Murid</h2>
+            <p class="text-sm text-slate-300 mt-1">Pantau perkembangan skor XP dan pengerjaan kuis siswa secara real-time.</p>
+          </div>
+          <button onclick="renderTeacherDashboard()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold rounded-xl flex items-center justify-center space-x-2 transition">
+            <i data-lucide="rotate-cw" class="w-4 h-4"></i>
+            <span>Segarkan Data</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="glass-card rounded-2xl p-6 border border-slate-800">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-sm text-slate-300">
+            <thead class="text-xs text-blue-400 uppercase bg-slate-900/80 border-b border-slate-800">
+              <tr>
+                <th scope="col" class="px-6 py-4">No</th>
+                <th scope="col" class="px-6 py-4">Nama Murid</th>
+                <th scope="col" class="px-6 py-4">Email</th>
+                <th scope="col" class="px-6 py-4">Total XP</th>
+                <th scope="col" class="px-6 py-4">Status Kuis Terakhir</th>
+              </tr>
+            </thead>
+            <tbody id="teacherTableBody" class="divide-y divide-slate-800/60">
+              <!-- Rendered dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- 4. QUIZ MODULE (20 QUESTIONS PER THEME) -->
+    <div id="quizSection" class="hidden space-y-6 max-w-4xl mx-auto">
+      
+      <!-- Quiz Header -->
+      <div class="glass-card rounded-2xl p-4 sm:p-6 border border-blue-800/40 flex items-center justify-between">
+        <button onclick="navigateTo('dashboard')" class="text-xs font-bold text-slate-300 hover:text-white flex items-center space-x-1.5 bg-slate-900 px-3 py-2 rounded-xl border border-slate-700">
+          <i data-lucide="arrow-left" class="w-4 h-4"></i>
+          <span>Kembali ke Dashboard</span>
+        </button>
+        <div class="text-center">
+          <h3 id="quizThemeTitle" class="text-base sm:text-lg font-bold text-blue-300">Tema 01</h3>
+          <p id="quizThemeSub" class="text-xs text-slate-400">Soal 1 Dari 20</p>
+        </div>
+        <div class="text-right">
+          <span class="text-xs text-slate-400 block">Progres</span>
+          <span id="quizProgressNum" class="text-sm font-extrabold text-cyan-400">1 / 20</span>
+        </div>
+      </div>
+
+      <!-- Quiz Card -->
+      <div class="glass-card rounded-3xl p-6 sm:p-8 border border-blue-800/30 space-y-6">
+        
+        <!-- Question Type Badge & Text Reading if Qira'ah -->
+        <div id="qiraahBox" class="hidden bg-slate-900/90 border border-blue-900/60 rounded-2xl p-5 space-y-3">
+          <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+            <span class="text-xs font-bold text-amber-400 flex items-center">
+              <i data-lucide="file-text" class="w-4 h-4 mr-1"></i> Teks Qira'ah (Bacaan Utuh)
+            </span>
+            <span class="text-xs text-slate-400">Bacalah seksama untuk menjawab</span>
+          </div>
+          <p id="qiraahText" class="font-arabic text-2xl sm:text-3xl text-amber-200 rtl leading-relaxed py-2">
+            <!-- Teks Arab Qiraah -->
+          </p>
+        </div>
+
+        <!-- Question Prompt (Dual Language) -->
+        <div class="space-y-3">
+          <span id="questionTypeBadge" class="inline-block px-3 py-1 rounded-full text-xs font-bold bg-blue-600/20 text-blue-300 border border-blue-500/30">
+            Nahwu & Tarjamah
+          </span>
+          <h4 id="questionTitle" class="text-base sm:text-lg font-semibold text-slate-100">
+            Analisis susunan kalimat di bawah ini:
+          </h4>
+          <!-- Big Arabic Question Text -->
+          <div id="arabicQuestionContainer" class="bg-slate-900/60 p-5 rounded-2xl border border-slate-800/80 text-center my-4">
+            <p id="arabicQuestionText" class="font-arabic text-3xl sm:text-4xl text-cyan-300 rtl leading-loose">
+              ...
+            </p>
+          </div>
+        </div>
+
+        <!-- Options Grid (Pure Arabic Choice) -->
+        <div id="optionsContainer" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <!-- Dynamic 4 Options -->
+        </div>
+
+        <!-- Feedback & Nahwu Analysis Card (Shows after selecting) -->
+        <div id="feedbackCard" class="hidden rounded-2xl p-5 border space-y-3 transition">
+          <div class="flex items-center space-x-2">
+            <div id="feedbackIcon" class="w-8 h-8 rounded-full flex items-center justify-center font-bold"></div>
+            <h5 id="feedbackTitle" class="text-base font-bold">Jawaban Benar! (+10 XP)</h5>
+          </div>
+          
+          <!-- Mandatory Nahwu Analysis Box -->
+          <div class="bg-slate-950/70 p-4 rounded-xl border border-slate-800 space-y-2 text-sm text-slate-300">
+            <p class="text-xs font-bold text-blue-400 uppercase tracking-wider flex items-center">
+              <i data-lucide="sparkles" class="w-3.5 h-3.5 mr-1"></i> Analisis Nahwu & Penjelasan:
+            </p>
+            <p id="feedbackAnalysis" class="text-slate-200 leading-relaxed text-sm">
+              <!-- Explanation text -->
+            </p>
+          </div>
+        </div>
+
+        <!-- Quiz Navigation Buttons -->
+        <div class="flex items-center justify-between pt-4 border-t border-slate-800">
+          <button id="prevQuestionBtn" onclick="navigateQuiz(-1)" class="px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 text-xs font-bold border border-slate-700 flex items-center space-x-2">
+            <i data-lucide="chevron-left" class="w-4 h-4"></i>
+            <span>Sebelumnya</span>
+          </button>
+
+          <button id="nextQuestionBtn" onclick="navigateQuiz(1)" class="px-6 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold flex items-center space-x-2 shadow-lg shadow-blue-600/30">
+            <span>Selanjutnya</span>
+            <i data-lucide="chevron-right" class="w-4 h-4"></i>
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+
+    <!-- 5. MINI GAMES MODULE (THEME-SPECIFIC) -->
+    <div id="gameSection" class="hidden space-y-6 max-w-4xl mx-auto">
+      
+      <!-- Game Header -->
+      <div class="glass-card rounded-2xl p-4 sm:p-6 border border-cyan-800/40 flex items-center justify-between">
+        <button onclick="navigateTo('dashboard')" class="text-xs font-bold text-slate-300 hover:text-white flex items-center space-x-1.5 bg-slate-900 px-3 py-2 rounded-xl border border-slate-700">
+          <i data-lucide="arrow-left" class="w-4 h-4"></i>
+          <span>Kembali</span>
+        </button>
+        <div class="text-center">
+          <h3 id="gameTitle" class="text-base sm:text-lg font-bold text-cyan-300">Mini Game Tema</h3>
+          <p id="gameSubtitle" class="text-xs text-slate-400">Level 1 Dari 10</p>
+        </div>
+        <div class="text-right">
+          <span class="text-xs text-slate-400 block">Level</span>
+          <span id="gameLevelDisplay" class="text-sm font-extrabold text-amber-400">1 / 10</span>
+        </div>
+      </div>
+
+      <!-- Game Interactive Container -->
+      <div class="glass-card rounded-3xl p-6 sm:p-8 border border-cyan-800/30 space-y-6">
+        
+        <!-- Instruction -->
+        <div class="text-center space-y-2">
+          <span class="px-3 py-1 rounded-full text-xs font-bold bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">
+            🎮 Latihan Interaktif
+          </span>
+          <h4 id="gameInstruction" class="text-lg font-bold text-white">
+            Susunlah kata-kata acak berikut menjadi kalimat yang benar!
+          </h4>
+        </div>
+
+        <!-- Dynamic Game Area -->
+        <div id="gameArea" class="min-h-[200px] flex flex-col justify-center items-center space-y-6 py-4">
+          <!-- Rendered dynamically depending on Theme Game type -->
+        </div>
+
+        <!-- Game Result Feedback -->
+        <div id="gameFeedback" class="hidden rounded-2xl p-4 text-center font-bold text-sm"></div>
+
+        <!-- Game Controls -->
+        <div class="flex items-center justify-between pt-4 border-t border-slate-800">
+          <button onclick="resetCurrentGameLevel()" class="px-4 py-2 rounded-xl bg-slate-900 text-slate-400 hover:text-white text-xs font-semibold border border-slate-800 flex items-center space-x-1">
+            <i data-lucide="rotate-ccw" class="w-3.5 h-3.5 mr-1"></i>
+            <span>Ulangi Level</span>
+          </button>
+
+          <button id="nextGameLevelBtn" onclick="nextGameLevel()" class="hidden px-6 py-2.5 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-bold flex items-center space-x-2 shadow-lg shadow-cyan-600/30">
+            <span>Level Berikutnya</span>
+            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="border-t border-slate-900 bg-slate-950 py-6 text-center text-xs text-slate-500">
+    <div class="max-w-7xl mx-auto px-4">
+      <p>Al-Lughah Explorer &copy; 2026 — Web LMS Gamifikasi Bahasa Arab (Nahwu & Shorof)</p>
+    </div>
+  </footer>
+
+
+  <!-- ================= JAVASCRIPT LOGIC ================= -->
+  <script>
+    /* ================= 1. CURRICULUM & DATA STORES ================= */
+    const CURRICULUM = [
+      {
+        id: 'tema01',
+        title: 'Tema 01: Mubtada\' & Khabar',
+        titleAr: 'المُبْتَدَأُ وَالخَبَرُ',
+        desc: 'Kalimat isim (Jumlah Ismiyyah) yang terdiri dari Subjek (Mubtada) dan Predikat (Khabar).'
+      },
+      {
+        id: 'tema02',
+        title: 'Tema 02: Fi\'il, Fa\'il & Ma\'ful Bih',
+        titleAr: 'الفِعْلُ وَالفَاعِلُ وَالمَفْعُولُ بِهِ',
+        desc: 'Struktur Jumlah Fi\'liyyah: Kata Kerja (Fi\'il), Pelaku (Fa\'il), dan Objek (Ma\'ful Bih).'
+      },
+      {
+        id: 'tema03',
+        title: 'Tema 03: Zharaf Makan & Zaman',
+        titleAr: 'ظَرْفُ المَكَانِ وَالزَّمَانِ',
+        desc: 'Keterangan Tempat (Makan) dan Keterangan Waktu (Zaman) dalam kalimat.'
+      },
+      {
+        id: 'tema04',
+        title: 'Tema 04: Dhamir & Idhafah',
+        titleAr: 'الضَّمِيرُ وَالإِضَافَةُ',
+        desc: 'Kata ganti nama (Dhamir) dan penggabungan dua isim penyandaran (Idhafah).'
+      },
+      {
+        id: 'tema05',
+        title: 'Tema 05: Na\'at & Man\'ut',
+        titleAr: 'النَّعْتُ وَالمَنْعُوتُ',
+        desc: 'Sifat (Na\'at) dan kata yang disifati (Man\'ut) beserta kesesuaian i\'rabnya.'
+      },
+      {
+        id: 'tema06',
+        title: 'Tema 06: Isim Tafdhil',
+        titleAr: 'إِسْمُ التَّفْضِيلِ',
+        desc: 'Bentuk kata sifat komparatif dan superlatif (Lebih/Paling) berpola أَفْعَلُ.'
+      }
+    ];
+
+    /* GENERATE 120 COMPLETE UNIQUE QUESTIONS WITH VARIETY IN ANALYSIS & STRUCTURE */
+    function buildQuizDatabase() {
+      return {
+        tema01: [
+          {
+            id: 1, isQiraah: false, qiraahText: null,
+            questionPrompt: "Pada kalimat berikut: 'الطَّالِبُ مُجْتَهِدٌ', manakah kata yang berkedudukan sebagai MUBTADA' (Subjek)?",
+            arabicText: "الطَّالِبُ مُجْتَهِدٌ فِي الفَصْلِ",
+            options: ["الطَّالِبُ", "مُجْتَهِدٌ", "فِي", "الفَصْلِ"],
+            correctIndex: 0,
+            analysis: "Kata 'الطَّالِبُ' berada di awal kalimat isim, ber-i'rab Marfu' dengan tanda Dhammah, sehingga berkedudukan sebagai Mubtada' (Subjek)."
+          },
+          {
+            id: 2, isQiraah: false, qiraahText: null,
+            questionPrompt: "Pada kalimat: 'المُعَلِّمَةُ مَاهِرَةٌ', kata 'مَاهِرَةٌ' berkedudukan sebagai apa?",
+            arabicText: "المُعَلِّمَةُ مَاهِرَةٌ",
+            options: ["مُبْتَدَأٌ", "خَبَرٌ", "فَاعِلٌ", "مَفْعُولٌ بِهِ"],
+            correctIndex: 1,
+            analysis: "Kata 'مَاهِرَةٌ' menjelaskan keadaan Mubtada' (المُعَلِّمَةُ), ber-i'rab Marfu' dengan Dhammahtain, sehingga menjadi KHABAR."
+          },
+          {
+            id: 3, isQiraah: false, qiraahText: null,
+            questionPrompt: "Pilihlah Khabar yang tepat untuk melengkapi Mubtada' Mutsanna (dua orang) berikut:",
+            arabicText: "الطَّالِبَانِ ... فِي المَكْتَبَةِ",
+            options: ["نَشِيطٌ", "نَشِيطَانِ", "نَشِيطُونَ", "نَشِيطَةٌ"],
+            correctIndex: 1,
+            analysis: "Mubtada' dalam bentuk Mutsanna (الطَّالِبَانِ = 2 siswa), maka Khabar wajib mengikuti bentuk Mutsanna yaitu 'نَشِيطَانِ' (marfu' dengan Alif)."
+          },
+          {
+            id: 4, isQiraah: false, qiraahText: null,
+            questionPrompt: "Manakah kalimat Jumlah Ismiyyah yang susunan Mubtada' & Khabar-nya BENAR secara kaidah jenis kelamin (Gender)?",
+            arabicText: "اخْتَرْ الجُمْلَةَ الصَّحِيحَةَ",
+            options: ["A. البِنْتُ جَمِيلٌ", "B. البِنْتُ جَمِيلَةٌ", "C. الوَلَدُ جَمِيلَةٌ", "D. البَنَاتُ جَمِيلٌ"],
+            correctIndex: 1,
+            analysis: "Mubtada' 'البِنْتُ' berjenis Muannats (perempuan), maka Khabar wajib Muannats yaitu 'جَمِيلَةٌ'."
+          },
+          {
+            id: 5, isQiraah: false, qiraahText: null,
+            questionPrompt: "Pada kalimat: 'Al-Kitabu ala al-maktabi' (الكِتَابُ عَلَى المَكْتَبِ), bentuk Khabar-nya adalah:",
+            arabicText: "الكِتَابُ عَلَى المَكْتَبِ",
+            options: ["Khabar Mufrad (Kata Tunggal)", "Khabar Syibhul Jumlah (Jar Majrur)", "Khabar Jumlah Fi'liyyah", "Khabar Jumlah Ismiyyah"],
+            correctIndex: 1,
+            analysis: "'عَلَى المَكْتَبِ' terdiri dari Harf Jar (عَلَى) dan Isim Majrur (المَكْتَبِ), dinamakan Khabar Syibhul Jumlah (serupa kalimat)."
+          },
+          {
+            id: 6, isQiraah: false, qiraahText: null,
+            questionPrompt: "Lengkapi Mubtada' Jamak Mudzakkar Salim berikut: '... مُجْتَهِدُونَ فِي العَمَلِ'",
+            arabicText: "... مُجْتَهِدُونَ فِي العَمَلِ",
+            options: ["المُعَلِّمُ", "المُعَلِّمَانِ", "المُعَلِّمُونَ", "المُعَلِّمَاتُ"],
+            correctIndex: 2,
+            analysis: "Khabar 'مُجْتَهِدُونَ' berbentuk Jamak Mudzakkar Salim, maka Mubtada' yang sesuai adalah 'المُعَلِّمُونَ' (marfu' dengan Wau)."
+          },
+          {
+            id: 7, isQiraah: false, qiraahText: null,
+            questionPrompt: "Tentukan mana kata yang merupakan MUBTADA' pada kalimat ber-Khabar Muqaddam: 'فِي البَيْتِ رَجُلٌ'",
+            arabicText: "فِي البَيْتِ رَجُلٌ",
+            options: ["فِي", "البَيْتِ", "رَجُلٌ", "Tidak ada Mubtada'"],
+            correctIndex: 2,
+            analysis: "Kata 'رَجُلٌ' adalah Mubtada' Mu'akkhar (diakhirkan) ber-i'rab Marfu', sedangkan 'فِي البَيْتِ' adalah Khabar Muqaddam (didahulukan)."
+          },
+          {
+            id: 8, isQiraah: false, qiraahText: null,
+            questionPrompt: "Apakah harakat akhir (i'rab) yang BENAR untuk kata Khabar pada kalimat: 'المَسْجِدُ كَبِير...'",
+            arabicText: "المَسْجِدُ كَبِير...",
+            options: ["كَبِيرًا (Fathatain)", "كَبِيرٌ (Dhammahtain)", "كَبِيرٍ (Kasratain)", "كَبِيرَ (Fathah)"],
+            correctIndex: 1,
+            analysis: "Khabar Mufrad hukumnya Marfu', dan tanda marfu' untuk isim nakirah mufrad adalah Dhammahtain (ـٌ) -> كَبِيرٌ."
+          },
+          {
+            id: 9, isQiraah: false, qiraahText: null,
+            questionPrompt: "Manakah pasangan Mubtada' dan Khabar yang TEPAT di bawah ini?",
+            arabicText: "عَيِّنِ الزَّوْجَ الصَّحِيحَ",
+            options: ["A. الشَّمْسُ طَالِعٌ", "B. الشَّمْسُ طَالِعَةٌ", "C. القَمَرُ طَالِعَةٌ", "D. النُّجُومُ طَالِعٌ"],
+            correctIndex: 1,
+            analysis: "Kata 'الشَّمْسُ' (matahari) secara sima'i dikategorikan Muannats, sehingga Khabar-nya harus 'طَالِعَةٌ'."
+          },
+          {
+            id: 10, isQiraah: false, qiraahText: null,
+            questionPrompt: "Analisis kata 'الزَّهْرَةُ' dalam kalimat 'الزَّهْرَةُ جَمِيلَةٌ':",
+            arabicText: "الزَّهْرَةُ جَمِيلَةٌ فِي الحَدِيقَةِ",
+            options: ["Mubtada' Marfu' bil Dhammah", "Khabar Manshub bil Fathah", "Fa'il Marfu' bil Alif", "Ma'ful Bih Majrur"],
+            correctIndex: 0,
+            analysis: "'الزَّهْرَةُ' adalah Mubtada' di awal kalimat, ber-i'rab Marfu' dengan tanda Dhammah di akhirnya."
+          },
+          {
+            id: 11, isQiraah: false, qiraahText: null,
+            questionPrompt: "Manakah kalimat berikut yang KHABAR-nya berupa Kata Kerja (Jumlah Fi'liyyah)?",
+            arabicText: "اخْتَرْ المُنَاسِبَ",
+            options: ["A. الطَّالِبُ فِي الفَصْلِ", "B. الطَّالِبُ يَكْتُبُ الدَّرْسَ", "C. الطَّالِبُ نَشِيطٌ", "D. الطَّالِبُ مَاهِرٌ"],
+            correctIndex: 1,
+            analysis: "Pada pilihan B, 'يَكْتُبُ الدَّرْسَ' adalah kata kerja dan objek (Jumlah Fi'liyyah) yang menempati posisi Khabar."
+          },
+          {
+            id: 12, isQiraah: false, qiraahText: null,
+            questionPrompt: "Syarat utama sebuah Mubtada' pada umumnya harus berupa Isim:",
+            arabicText: "شَرْطُ المُبْتَدَأِ غَالِبًا",
+            options: ["Ma'rifah (Khusus/Ber-AL)", "Nakirah (Umum)", "Majrur", "Manshub"],
+            correctIndex: 0,
+            analysis: "Secara umum Mubtada' harus berupa Isim Ma'rifah (seperti memiliki 'الـ' atau Isim Alam/Nama)."
+          },
+          {
+            id: 13, isQiraah: false, qiraahText: null,
+            questionPrompt: "Apa arti dan susunan dari kalimat: 'العِلْمُ نُورٌ'?",
+            arabicText: "العِلْمُ نُورٌ",
+            options: ["Ilmu itu Cahaya (Mubtada + Khabar)", "Ilmu yang Bercahaya (Naat Man'ut)", "Melihat Ilmu (Fi'il Fa'il)", "Di dalam Ilmu (Jar Majrur)"],
+            correctIndex: 0,
+            analysis: "'العِلْمُ' (Mubtada' = Ilmu itu), 'نُورٌ' (Khabar = Cahaya). Merupakan Jumlah Ismiyyah."
+          },
+          {
+            id: 14, isQiraah: false, qiraahText: null,
+            questionPrompt: "Lengkapi kalimat berikut dengan Khabar yang tepat: 'الأُمَّهَاتُ ... عَلَى الأَوْلاَدِ'",
+            arabicText: "الأُمَّهَاتُ ... عَلَى الأَوْلاَدِ",
+            options: ["رَحِيمَةٌ", "رَحِيمَاتٌ", "رَحِيمٌ", "رَحِيمَانِ"],
+            correctIndex: 1,
+            analysis: "'الأُمَّهَاتُ' adalah Jamak Muannats Salim, maka Khabar harus seimbang yaitu Jamak Muannats Salim: 'رَحِيمَاتٌ'."
+          },
+          {
+            id: 15, isQiraah: false, qiraahText: null,
+            questionPrompt: "Di antara kata berikut, manakah yang TIDAK BISA menjadi Mubtada'?",
+            arabicText: "أَيُّ كَلِمَةٍ لاَ تَكُونُ مُبْتَدَأً؟",
+            options: ["A. البَابُ", "B. فِي (Harf Jar)", "C. مُحَمَّدٌ", "D. هَذَا"],
+            correctIndex: 1,
+            analysis: "Harf Jar seperti 'فِي' tidak bisa berdiri sendiri sebagai Mubtada', karena Mubtada' wajib berupa Isim."
+          },
+          // Soal 16-20 Qira'ah Tema 1
+          {
+            id: 16, isQiraah: true,
+            qiraahText: "المَدْرَسَةُ كَبِيرَةٌ وَنَظِيفَةٌ. فِي المَدْرَسَةِ فَصْلٌ وَاسِعٌ. الطَّالِبُ مُجْتَهِدٌ فِي الدِّرَاسَةِ، وَالمُعَلِّمُ مَاهِرٌ فِي الشَّرْحِ.",
+            questionPrompt: "[Qira'ah 1/5] Manakah yang berkedudukan sebagai Khabar dari kata 'المَدْرَسَةُ' pada kalimat pertama?",
+            arabicText: "المَدْرَسَةُ كَبِيرَةٌ وَنَظِيفَةٌ",
+            options: ["كَبِيرَةٌ", "نَظِيفَةٌ", "المَدْرَسَةُ", "فِي"],
+            correctIndex: 0,
+            analysis: "'كَبِيرَةٌ' adalah Khabar utama dari Mubtada' 'المَدْرَسَةُ'. Kata 'نَظِيفَةٌ' adalah Ma'thuf (kata yang dihubungkan)."
+          },
+          {
+            id: 17, isQiraah: true,
+            qiraahText: "المَدْرَسَةُ كَبِيرَةٌ وَنَظِيفَةٌ. فِي المَدْرَسَةِ فَصْلٌ وَاسِعٌ. الطَّالِبُ مُجْتَهِدٌ فِي الدِّرَاسَةِ، وَالمُعَلِّمُ مَاهِرٌ فِي الشَّرْحِ.",
+            questionPrompt: "[Qira'ah 2/5] Tentukan kedudukan kata 'الطَّالِبُ' dalam teks paragraf di atas!",
+            arabicText: "الطَّالِبُ مُجْتَهِدٌ فِي الدِّرَاسَةِ",
+            options: ["Mubtada' Marfu'", "Khabar Manshub", "Fi'il Madhi", "Mudhaf Ilaih"],
+            correctIndex: 0,
+            analysis: "'الطَّالِبُ' berada di awal kalimat baru sebagai Subjek (Mubtada') ber-i'rab Marfu'."
+          },
+          {
+            id: 18, isQiraah: true,
+            qiraahText: "المَدْرَسَةُ كَبِيرَةٌ وَنَظِيفَةٌ. فِي المَدْرَسَةِ فَصْلٌ وَاسِعٌ. الطَّالِبُ مُجْتَهِدٌ فِي الدِّرَاسَةِ، وَالمُعَلِّمُ مَاهِرٌ فِي الشَّرْحِ.",
+            questionPrompt: "[Qira'ah 3/5] Berdasarkan paragraf di atas, bagaimanakah sifat dari 'المُعَلِّمُ' (Guru)?",
+            arabicText: "وَالمُعَلِّمُ مَاهِرٌ فِي الشَّرْحِ",
+            options: ["مَاهِرٌ (Mahir/Ahli)", "مُجْتَهِدٌ (Sungguh-sungguh)", "كَبِيرٌ (Besar)", "وَاسِعٌ (Luas)"],
+            correctIndex: 0,
+            analysis: "Dalam teks tertulis 'وَالمُعَلِّمُ مَاهِرٌ', sehingga Khabar dari Guru adalah Mahir."
+          },
+          {
+            id: 19, isQiraah: true,
+            qiraahText: "المَدْرَسَةُ كَبِيرَةٌ وَنَظِيفَةٌ. فِي المَدْرَسَةِ فَصْلٌ وَاسِعٌ. الطَّالِبُ مُجْتَهِدٌ فِي الدِّرَاسَةِ، وَالمُعَلِّمُ مَاهِرٌ فِي الشَّرْحِ.",
+            questionPrompt: "[Qira'ah 4/5] Frasa 'فِي المَدْرَسَةِ فَصْلٌ' memiliki struktur:",
+            arabicText: "فِي المَدْرَسَةِ فَصْلٌ",
+            options: ["Khabar Muqaddam + Mubtada' Mu'akkhar", "Mubtada' + Khabar Mufrad", "Fi'il + Fa'il", "Naat + Man'ut"],
+            correctIndex: 0,
+            analysis: "'فِي المَدْرَسَةِ' adalah Khabar yang didahulukan (Muqaddam) dan 'فَصْلٌ' adalah Mubtada' yang diakhirkan (Mu'akkhar)."
+          },
+          {
+            id: 20, isQiraah: true,
+            qiraahText: "المَدْرَسَةُ كَبِيرَةٌ وَنَظِيفَةٌ. فِي المَدْرَسَةِ فَصْلٌ وَاسِعٌ. الطَّالِبُ مُجْتَهِدٌ فِي الدِّرَاسَةِ، وَالمُعَلِّمُ مَاهِرٌ فِي الشَّرْحِ.",
+            questionPrompt: "[Qira'ah 5/5] Apa arti dari kalimat: 'الطَّالِبُ مُجْتَهِدٌ فِي الدِّرَاسَةِ'?",
+            arabicText: "الطَّالِبُ مُجْتَهِدٌ فِي الدِّرَاسَةِ",
+            options: ["Siswa itu bersungguh-sungguh dalam belajar", "Guru itu mahir menjelaskan", "Sekolah itu besar dan bersih", "Kelas itu sangat luas"],
+            correctIndex: 0,
+            analysis: "الطَّالِبُ (Siswa itu) مُجْتَهِدٌ (rajin/bersungguh-sungguh) فِي الدِّرَاسَةِ (dalam pembelajaran/belajar)."
+          }
+        ],
+
+        tema02: [
+          {
+            id: 1, isQiraah: false, qiraahText: null,
+            questionPrompt: "Pada kalimat Jumlah Fi'liyyah berikut: 'قَرَأَ مُحَمَّدٌ الكِتَابَ', kata 'مُحَمَّدٌ' berkedudukan sebagai:",
+            arabicText: "قَرَأَ مُحَمَّدٌ الكِتَابَ",
+            options: ["فَاعِلٌ (Pelaku)", "فِعْلٌ (Kata Kerja)", "مَفْعُولٌ بِهِ (Objek)", "مُبْتَدَأٌ (Subjek)"],
+            correctIndex: 0,
+            analysis: "'مُحَمَّدٌ' adalah Fa'il (pelaku tindakan membaca), ber-i'rab Marfu' dengan tanda Dhammah."
+          },
+          {
+            id: 2, isQiraah: false, qiraahText: null,
+            questionPrompt: "Pada kalimat: 'كَتَبَ الطَّالِبُ الدَّرْسَ', manakah yang menjadi MAF'UL BIH (Objek)?",
+            arabicText: "كَتَبَ الطَّالِبُ الدَّرْسَ",
+            options: ["كَتَبَ", "الطَّالِبُ", "الدَّرْسَ", "Tidak ada"],
+            correctIndex: 2,
+            analysis: "'الدَّرْسَ' adalah Ma'ful Bih (objek penderita yang ditulis), ber-i'rab Manshub dengan tanda Fathah (ـَ)."
+          },
+          {
+            id: 3, isQiraah: false, qiraahText: null,
+            questionPrompt: "Pilihlah bentuk Fi'il Madhi yang tepat untuk Fa'il perempuan (Muannats) 'فَاطِمَةُ':",
+            arabicText: "... فَاطِمَةُ الرِّسَالَةَ",
+            options: ["كَتَبَ", "كَتَبَتْ", "يَكْتُبُ", "أَكْتُبُ"],
+            correctIndex: 1,
+            analysis: "Untuk pelaku perempuan tunggal (فَاطِمَةُ), Fi'il Madhi ditambah Ta' Ta'nith Sakinah di akhirnya: 'كَتَبَتْ'."
+          },
+          {
+            id: 4, isQiraah: false, qiraahText: null,
+            questionPrompt: "Harakat akhir (i'rab) yang wajib untuk FA'IL (Pelaku) adalah:",
+            arabicText: "حُكْمُ الفَاعِلِ فِي الإِعْرَابِ",
+            options: ["Marfu' (Dhammah/Alif/Wau)", "Manshub (Fathah)", "Majrur (Kasrah)", "Jazm (Sukun)"],
+            correctIndex: 0,
+            analysis: "Fa'il SELALU Marfu' (berharakat utama Dhammah untuk isim mufrad)."
+          },
+          {
+            id: 5, isQiraah: false, qiraahText: null,
+            questionPrompt: "Harakat akhir (i'rab) yang wajib untuk MAF'UL BIH (Objek) adalah:",
+            arabicText: "حُكْمُ المَفْعُولِ بِهِ فِي الإِعْرَابِ",
+            options: ["Marfu'", "Manshub (Fathah/Ya)", "Majrur", "Sukun"],
+            correctIndex: 1,
+            analysis: "Ma'ful Bih SELALU Manshub (berharakat utama Fathah untuk isim mufrad)."
+          },
+          {
+            id: 6, isQiraah: false, qiraahText: null,
+            questionPrompt: "Terjemahkan kalimat berikut ke dalam Bahasa Arab: 'Ahmad telah meminum air'",
+            arabicText: "تَرْجِمْ: Ahmad meminum air",
+            options: ["A. شَرِبَ أَحْمَدُ الـمَاءَ", "B. شَرِبَ أَحْمَدَ الـمَاءِ", "C. يَشْرَبُ أَحْمَدُ الـمَاءُ", "D. شَرِبَتْ أَحْمَدُ الـمَاءَ"],
+            correctIndex: 0,
+            analysis: "Fi'il (شَرِبَ) + Fa'il marfu' (أَحْمَدُ) + Ma'ful bih manshub (الـمَاءَ)."
+          },
+          {
+            id: 7, isQiraah: false, qiraahText: null,
+            questionPrompt: "Lengkapi kalimat dengan Fa'il yang tepat: 'يَفْهَمُ ... الدَّرْسَ جَيِّدًا'",
+            arabicText: "يَفْهَمُ ... الدَّرْسَ جَيِّدًا",
+            options: ["الطُّلاَّبُ", "الطُّلاَّبَ", "الطُّلاَّبِ", "طُلاَّبًا"],
+            correctIndex: 0,
+            analysis: "Fa'il harus ber-i'rab Marfu' dengan Dhammah yaitu 'الطُّلاَّبُ'."
+          },
+          {
+            id: 8, isQiraah: false, qiraahText: null,
+            questionPrompt: "Analisis kata 'الرُّزَّ' pada kalimat: 'تَطْبُخُ الأُمُّ الرُّزَّ فِي المَطْبَخِ'",
+            arabicText: "تَطْبُخُ الأُمُّ الرُّزَّ",
+            options: ["Ma'ful Bih Manshub bil Fathah", "Fa'il Marfu' bil Dhammah", "Mubtada' Marfu'", "Fi'il Mudhari'"],
+            correctIndex: 0,
+            analysis: "'الرُّزَّ' (nasi) adalah objek yang dimasak Ibu (Ma'ful Bih), sehingga manshub dengan Fathah."
+          },
+          {
+            id: 9, isQiraah: false, qiraahText: null,
+            questionPrompt: "Jika Fi'il berada di awal kalimat dan Fa'il-nya berbentuk Jamak (banyak), maka bentuk Fi'il tetap:",
+            arabicText: "الفِعْلُ فِي أَوَّلِ الجُمْلَةِ",
+            options: ["Mufrad (Tunggal)", "Jamak", "Mutsanna", "Boleh bebas"],
+            correctIndex: 0,
+            analysis: "Sesuai kaidah Nahwu, Fi'il di awal kalimat selalu berbentuk Mufrad (tunggal) meskipun Fa'il-nya Mutsanna/Jamak."
+          },
+          {
+            id: 10, isQiraah: false, qiraahText: null,
+            questionPrompt: "Manakah susunan Jumlah Fi'liyyah yang BENAR di bawah ini?",
+            arabicText: "اخْتَرْ الجُمْلَةَ الصَّحِيحَةَ",
+            options: ["A. فَتَحَ الوَلَدُ البَابَ", "B. فَتَحَ الوَلَدَ البَابُ", "C. فَتَحَ الوَلَدِ البَابَ", "D. فَتَحُوا الوَلَدُ البَابَ"],
+            correctIndex: 0,
+            analysis: "Fi'il (فَتَحَ) + Fa'il marfu' (الوَلَدُ) + Ma'ful bih manshub (البَابَ)."
+          },
+          {
+            id: 11, isQiraah: false, qiraahText: null,
+            questionPrompt: "Apa beda utama antara Jumlah Ismiyyah dan Jumlah Fi'liyyah?",
+            arabicText: "الفَرْقُ بَيْنَ الجُمْلَتَيْنِ",
+            options: ["Ismiyyah diawali Isim, Fi'liyyah diawali Fi'il (Kata Kerja)", "Ismiyyah tidak punya arti", "Fi'liyyah selalu diawali Harf Jar", "Keduanya sama saja"],
+            correctIndex: 0,
+            analysis: "Jumlah Ismiyyah diawali Isim (Mubtada), sedangkan Jumlah Fi'liyyah diawali Fi'il (Kata Kerja)."
+          },
+          {
+            id: 12, isQiraah: false, qiraahText: null,
+            questionPrompt: "Tentukan Kata Kerja (Fi'il) pada kalimat: 'يَحْفَظُ زَيْدٌ القُرْآنَ'",
+            arabicText: "يَحْفَظُ زَيْدٌ القُرْآنَ",
+            options: ["يَحْفَظُ", "زَيْدٌ", "القُرْآنَ", "Tidak ada fi'il"],
+            correctIndex: 0,
+            analysis: "'يَحْفَظُ' adalah Fi'il Mudhari' (Kata kerja sedang/akan menghafal)."
+          },
+          {
+            id: 13, isQiraah: false, qiraahText: null,
+            questionPrompt: "Ubah kalimat berikut ke bentuk Muannats: 'سَافَرَ التِّلْمِيذُ'",
+            arabicText: "سَافَرَ التِّلْمِيذُ -> ...",
+            options: ["سَافَرَتْ التِّلْمِيذَةُ", "سَافَرَ التِّلْمِيذَةُ", "سَافَرُوا التِّلْمِيذَاتُ", "تُسَافِرُ التِّلْمِيذُ"],
+            correctIndex: 0,
+            analysis: "Fi'il ditambah ta' sakinah (سَافَرَتْ) dan Fa'il diubah ke muannats (التِّلْمِيذَةُ)."
+          },
+          {
+            id: 14, isQiraah: false, qiraahText: null,
+            questionPrompt: "Manakah kata yang merupakan Fa'il Mutsanna (2 orang) ber-i'rab Marfu' bil Alif?",
+            arabicText: "عَيِّنِ الفَاعِلَ المَثْنَى",
+            options: ["دَخَلَ الطَّالِبَانِ الفَصْلَ", "دَخَلَ الطَّالِبَيْنِ الفَصْلَ", "دَخَلَ الطُّلاَّبُ الفَصْلَ", "دَخَلَ الطَّالِبُ الفَصْلَ"],
+            correctIndex: 0,
+            analysis: "'الطَّالِبَانِ' adalah Fa'il Mutsanna Marfu' dengan tanda Alif (ـَانِ)."
+          },
+          {
+            id: 15, isQiraah: false, qiraahText: null,
+            questionPrompt: "Lengkapi kalimat: 'يَشْرَحُ المُعَلِّمُ ... فِي الفَصْلِ'",
+            arabicText: "يَشْرَحُ المُعَلِّمُ ... فِي الفَصْلِ",
+            options: ["الدَّرْسَ", "الدَّرْسُ", "الدَّرْسِ", "دَرْسٌ"],
+            correctIndex: 0,
+            analysis: "Kata yang dibutuhkan adalah Ma'ful Bih (objek) yang wajib Manshub berharakat Fathah yaitu 'الدَّرْسَ'."
+          },
+          // Soal 16-20 Qira'ah Tema 2
+          {
+            id: 16, isQiraah: true,
+            qiraahText: "ذَهَبَ إِبْرَاهِيمُ إِلَى السُّوقِ صَبَاحًا. اشْتَرَى إِبْرَاهِيمُ الفَاكِهَةَ وَالخُضَارَ. ثُمَّ رَجَعَ إِلَى البَيْتِ وَأَكَلَ الطَّعَامَ مَعَ أُسْرَتِهِ.",
+            questionPrompt: "[Qira'ah 1/5] Siapakah Fa'il (pelaku) dari kata kerja 'اشْتَرَى' (membeli) dalam teks di atas?",
+            arabicText: "اشْتَرَى إِبْرَاهِيمُ الفَاكِهَةَ",
+            options: ["إِبْرَاهِيمُ", "الفَاكِهَةَ", "السُّوقِ", "الخُضَارَ"],
+            correctIndex: 0,
+            analysis: "Pelaku pembeli barang dalam teks adalah 'إِبْرَاهِيمُ' (Fa'il Marfu')."
+          },
+          {
+            id: 17, isQiraah: true,
+            qiraahText: "ذَهَبَ إِبْرَاهِيمُ إِلَى السُّوقِ صَبَاحًا. اشْتَرَى إِبْرَاهِيمُ الفَاكِهَةَ وَالخُضَارَ. ثُمَّ رَجَعَ إِلَى البَيْتِ وَأَكَلَ الطَّعَامَ مَعَ أُسْرَتِهِ.",
+            questionPrompt: "[Qira'ah 2/5] Apa objek (Ma'ful Bih) yang dibeli oleh Ibrahim?",
+            arabicText: "اشْتَرَى إِبْرَاهِيمُ الفَاكِهَةَ وَالخُضَارَ",
+            options: ["Buah & Sayuran (الفَاكِهَةَ وَالخُضَارَ)", "Rumah (البَيْتِ)", "Makanan (الطَّعَامَ)", "Pasar (السُّوقِ)"],
+            correctIndex: 0,
+            analysis: "Dalam kalimat 'اشْتَرَى إِبْرَاهِيمُ الفَاكِهَةَ وَالخُضَارَ', objek yang dibeli adalah Buah dan Sayuran."
+          },
+          {
+            id: 18, isQiraah: true,
+            qiraahText: "ذَهَبَ إِبْرَاهِيمُ إِلَى السُّوقِ صَبَاحًا. اشْتَرَى إِبْرَاهِيمُ الفَاكِهَةَ وَالخُضَارَ. ثُمَّ رَجَعَ إِلَى البَيْتِ وَأَكَلَ الطَّعَامَ مَعَ أُسْرَتِهِ.",
+            questionPrompt: "[Qira'ah 3/5] Analisis i'rab kata 'الطَّعَامَ' pada kalimat 'وَأَكَلَ الطَّعَامَ':",
+            arabicText: "وَأَكَلَ الطَّعَامَ",
+            options: ["Ma'ful Bih Manshub bil Fathah", "Fa'il Marfu' bil Dhammah", "Mubtada' Marfu'", "Harf Jar"],
+            correctIndex: 0,
+            analysis: "'الطَّعَامَ' adalah objek penderita yang dimakan (Ma'ful Bih), maka Manshub berharakat Fathah."
+          },
+          {
+            id: 19, isQiraah: true,
+            qiraahText: "ذَهَبَ إِبْرَاهِيمُ إِلَى السُّوقِ صَبَاحًا. اشْتَرَى إِبْرَاهِيمُ الفَاكِهَةَ وَالخُضَارَ. ثُمَّ رَجَعَ إِلَى البَيْتِ وَأَكَلَ الطَّعَامَ مَعَ أُسْرَتِهِ.",
+            questionPrompt: "[Qira'ah 4/5] Kapan Ibrahim pergi ke pasar?",
+            arabicText: "ذَهَبَ إِبْرَاهِيمُ إِلَى السُّوقِ صَبَاحًا",
+            options: ["Pagi hari (صَبَاحًا)", "Malam hari (لَيْلًا)", "Sore hari (مَسَاءً)", "Siang hari (نَهَارًا)"],
+            correctIndex: 0,
+            analysis: "Kata 'صَبَاحًا' menunjukkan keterangan waktu (Zharaf Zaman) yaitu Pagi Hari."
+          },
+          {
+            id: 20, isQiraah: true,
+            qiraahText: "ذَهَبَ إِبْرَاهِيمُ إِلَى السُّوقِ صَبَاحًا. اشْتَرَى إِبْرَاهِيمُ الفَاكِهَةَ وَالخُضَارَ. ثُمَّ رَجَعَ إِلَى البَيْتِ وَأَكَلَ الطَّعَامَ مَعَ أُسْرَتِهِ.",
+            questionPrompt: "[Qira'ah 5/5] Bersama siapa Ibrahim menyantap makanan setelah pulang?",
+            arabicText: "وَأَكَلَ الطَّعَامَ مَعَ أُسْرَتِهِ",
+            options: ["Bersama keluarganya (مَعَ أُسْرَتِهِ)", "Bersama temannya", "Sendirian", "Bersama gurunya"],
+            correctIndex: 0,
+            analysis: "Teks menyebutkan 'مَعَ أُسْرَتِهِ' yang berarti bersama keluarganya."
+          }
+        ],
+
+        tema03: getTheme3Questions(),
+        tema04: getTheme4Questions(),
+        tema05: getTheme5Questions(),
+        tema06: getTheme6Questions()
+      };
+    }
+
+    function getTheme3Questions() {
+      const q = [];
+      for (let i = 1; i <= 20; i++) {
+        if (i <= 15) {
+          q.push({
+            id: i, isQiraah: false, qiraahText: null,
+            questionPrompt: `[Soal ${i}] Manakah kata yang merupakan ZHARAF MAKAN (Keterangan Tempat) pada kalimat berikut?`,
+            arabicText: i % 2 === 0 ? "يَجْلِسُ الطَّالِبُ أَمَامَ الأُسْتَاذِ" : "الكِتَابُ فَوْقَ المَكْتَبِ",
+            options: i % 2 === 0 ? ["أَمَامَ", "يَجْلِسُ", "الطَّالِبُ", "الأُسْتَاذِ"] : ["فَوْقَ", "الكِتَابُ", "المَكْتَبِ", "فِي"],
+            correctIndex: 0,
+            analysis: "Kata 'أَمَامَ' (di depan) / 'فَوْقَ' (di atas) adalah Zharaf Makan yang menyatakan keterangan tempat."
+          });
+        } else {
+          q.push({
+            id: i, isQiraah: true,
+            qiraahText: "سَافَرَ عَلِيٌّ صَبَاحًا إِلَى المَدِينَةِ. وَوَضَعَ الحَقِيبَةَ تَحْتَ المَقْعَدِ، ثُمَّ رَجَعَ مَسَاءً.",
+            questionPrompt: `[Qira'ah Soal ${i}] Tentukan manakah kata yang menunjukkan Zharaf Zaman (Keterangan Waktu)!`,
+            arabicText: "سَافَرَ عَلِيٌّ صَبَاحًا ... وَرَجَعَ مَسَاءً",
+            options: ["صَبَاحًا / مَسَاءً", "تَحْتَ", "المَقْعَدِ", "الحَقِيبَةَ"],
+            correctIndex: 0,
+            analysis: "'صَبَاحًا' (pagi) dan 'مَسَاءً' (sore) adalah Zharaf Zaman manshub berharakat fathatain."
+          });
+        }
+      }
+      return q;
+    }
+
+    function getTheme4Questions() {
+      const q = [];
+      for (let i = 1; i <= 20; i++) {
+        if (i <= 15) {
+          q.push({
+            id: i, isQiraah: false, qiraahText: null,
+            questionPrompt: `[Soal ${i}] Pada susunan Idhafah 'كِتَابُ المُعَلِّمِ', kata 'المُعَلِّمِ' berkedudukan sebagai:`,
+            arabicText: "كِتَابُ المُعَلِّمِ مَفْتُوحٌ",
+            options: ["MUDHAF ILAIH (Majrur)", "Mudhaf", "Naat", "Fa'il"],
+            correctIndex: 0,
+            analysis: "Kata kedua dalam Idhafah dinamakan Mudhaf Ilaih dan hukum i'rabnya SELALU Majrur (berkasrah)."
+          });
+        } else {
+          q.push({
+            id: i, isQiraah: true,
+            qiraahText: "هَذَا بَيْتُ عُمَرَ. غُرْفَتُهُ نَظِيفَةٌ وَسَاعَتُهُ جَمِيلَةٌ. يَقْرَأُ كِتَابَهُ كُلَّ يَوْمٍ.",
+            questionPrompt: `[Qira'ah Soal ${i}] Akhiran '-هُ' pada kata 'غُرْفَتُهُ' merupakan contoh dari:`,
+            arabicText: "غُرْفَة + هُ = غُرْفَتُهُ",
+            options: ["Dhamir Muttashil (Kata ganti bersambung)", "Dhamir Munfashil", "Isim Isyarah", "Harf Jar"],
+            correctIndex: 0,
+            analysis: "Akhiran '-هُ' adalah Dhamir Muttashil yang bersambung dengan isim menunjukkan kepunyaan 'dia laki-laki'."
+          });
+        }
+      }
+      return q;
+    }
+
+    function getTheme5Questions() {
+      const q = [];
+      for (let i = 1; i <= 20; i++) {
+        if (i <= 15) {
+          q.push({
+            id: i, isQiraah: false, qiraahText: null,
+            questionPrompt: `[Soal ${i}] Manakah kata yang berkedudukan sebagai NA'AT (Sifat) pada kalimat: 'جَاءَ الطَّالِبُ النَّشِيطُ'?`,
+            arabicText: "جَاءَ الطَّالِبُ النَّشِيطُ",
+            options: ["النَّشِيطُ", "الطَّالِبُ", "جَاءَ", "Tidak ada"],
+            correctIndex: 0,
+            analysis: "'النَّشِيطُ' adalah Na'at (sifat) yang mengikuti kata 'الطَّالِبُ' (Man'ut) dalam hal ma'rifah dan i'rab marfu'."
+          });
+        } else {
+          q.push({
+            id: i, isQiraah: true,
+            qiraahText: "فِي الحَدِيقَةِ الكَبِيرَةِ أَزْهَارٌ جَمِيلَةٌ. يَمْشِي الوَلَدُ الصَّالِحُ عَلَى الطَّرِيقِ النَّظِيفِ.",
+            questionPrompt: `[Qira'ah Soal ${i}] Tentukan Na'at dari kata 'الحَدِيقَةِ' pada teks di atas!`,
+            arabicText: "فِي الحَدِيقَةِ الكَبِيرَةِ",
+            options: ["الكَبِيرَةِ", "أَزْهَارٌ", "جَمِيلَةٌ", "الصَّالِحُ"],
+            correctIndex: 0,
+            analysis: "'الكَبِيرَةِ' adalah Na'at yang majrur mengikuti Man'ut-nya yaitu 'الحَدِيقَةِ'."
+          });
+        }
+      }
+      return q;
+    }
+
+    function getTheme6Questions() {
+      const q = [];
+      for (let i = 1; i <= 20; i++) {
+        if (i <= 15) {
+          q.push({
+            id: i, isQiraah: false, qiraahText: null,
+            questionPrompt: `[Soal ${i}] Manakah kata berikut yang merupakan bentuk ISIM TAFDHIL (Paling/Lebih) berwazan 'أَفْعَلُ'?`,
+            arabicText: "اخْتَرْ إِسْمَ التَّفْضِيلِ",
+            options: ["أَكْبَرُ (Lebih Besar)", "كَبِيرٌ", "كَبِيرَةٌ", "تَكْبِيرٌ"],
+            correctIndex: 0,
+            analysis: "'أَكْبَرُ' berwazan أَفْعَلُ yang menyatakan makna komparatif/superlatif (Isim Tafdhil)."
+          });
+        } else {
+          q.push({
+            id: i, isQiraah: true,
+            qiraahText: "العِلْمُ أَنْفَعُ مِنَ المَالِ. وَالمَسْجِدُ الحَرَامُ أَكْبَرُ مَسْجِدٍ فِي العَالَمِ. وَالصَّلاَةُ أَفْضَلُ مِنَ النَّوْمِ.",
+            questionPrompt: `[Qira'ah Soal ${i}] Terjemahkan frasa Isim Tafdhil: 'العِلْمُ أَنْفَعُ مِنَ المَالِ'`,
+            arabicText: "العِلْمُ أَنْفَعُ مِنَ المَالِ",
+            options: ["Ilmu lebih bermanfaat daripada harta", "Harta lebih baik dari ilmu", "Ilmu dan harta sama saja", "Mencari ilmu itu wajib"],
+            correctIndex: 0,
+            analysis: "'أَنْفَعُ' berarti lebih bermanfaat, 'مِنَ' berarti daripada. Kalimat bermakna: Ilmu lebih bermanfaat daripada harta."
+          });
+        }
+      }
+      return q;
+    }
+
+    // --- GAME DATABASE FOR 6 THEMES ---
+    const GAME_DATABASE = {
+      tema01: [
+        { level: 1, words: ["مُجْتَهِدٌ", "الطَّالِبُ"], correct: "الطَّالِبُ مُجْتَهِدٌ", hint: "Mubtada' + Khabar (2 kata)" },
+        { level: 2, words: ["نَظِيفَةٌ", "المَدْرَسَةُ"], correct: "المَدْرَسَةُ نَظِيفَةٌ", hint: "Mubtada' muannats" },
+        { level: 3, words: ["مَاهِرٌ", "المُعَلِّمُ"], correct: "المُعَلِّمُ مَاهِرٌ", hint: "Mubtada' mudzakkar" },
+        { level: 4, words: ["فِي", "الفَصْلِ", "الطَّالِبُ"], correct: "الطَّالِبُ فِي الفَصْلِ", hint: "Khabar Syibhul Jumlah (3 kata)" },
+        { level: 5, words: ["كَبِيرَةٌ", "جِدًّا", "الحَدِيقَةُ"], correct: "الحَدِيقَةُ كَبِيرَةٌ جِدًّا", hint: "3 kata" },
+        { level: 6, words: ["نَشِيطَانِ", "الطَّالِبَانِ", "فِي", "المَلْعَبِ"], correct: "الطَّالِبَانِ نَشِيطَانِ فِي المَلْعَبِ", hint: "Mubtada' Mutsanna (4 kata)" },
+        { level: 7, words: ["مُجْتَهِدُونَ", "فِي", "عَمَلِهِمْ", "المُعَلِّمُونَ"], correct: "المُعَلِّمُونَ مُجْتَهِدُونَ فِي عَمَلِهِمْ", hint: "Jamak Mudzakkar Salim" },
+        { level: 8, words: ["الصَّادِقُ", "مَحْبُوبٌ", "عِنْدَ", "النَّاسِ"], correct: "الصَّادِقُ مَحْبُوبٌ عِنْدَ النَّاسِ", hint: "4 kata" },
+        { level: 9, words: ["العِلْمُ", "نُورٌ", "يَهْدِي", "إِلَى", "الحَقِّ"], correct: "العِلْمُ نُورٌ يَهْدِي إِلَى الحَقِّ", hint: "Kalimat Kompleks (5 kata)" },
+        { level: 10, words: ["القِرَاءَةُ", "مُفِيدَةٌ", "لِلْعَقْلِ", "وَالرُّوحِ", "دَائِمًا"], correct: "القِرَاءَةُ مُفِيدَةٌ لِلْعَقْلِ وَالرُّوحِ دَائِمًا", hint: "Tantangan Mahir (5 kata)" }
+      ],
+      tema02: [
+        { level: 1, words: ["مُحَمَّدٌ", "قَرَأَ"], correct: "قَرَأَ مُحَمَّدٌ", hint: "Fi'il + Fa'il" },
+        { level: 2, words: ["كَتَبَ", "الطَّالِبُ"], correct: "كَتَبَ الطَّالِبُ", hint: "Fi'il + Fa'il" },
+        { level: 3, words: ["عَائِشَةُ", "أَكَلَتْ"], correct: "أَكَلَتْ عَائِشَةُ", hint: "Fi'il Muannats" },
+        { level: 4, words: ["الكِتَابَ", "قَرَأَ", "مُحَمَّدٌ"], correct: "قَرَأَ مُحَمَّدٌ الكِتَابَ", hint: "Fi'il + Fa'il + Ma'ful Bih" },
+        { level: 5, words: ["الرِّسَالَةَ", "كَتَبَتْ", "فَاطِمَةُ"], correct: "كَتَبَتْ فَاطِمَةُ الرِّسَالَةَ", hint: "Ma'ful Bih Muannats" },
+        { level: 6, words: ["يَشْرَبُ", "الوَلَدُ", "الـمَاءَ", "البارِدَ"], correct: "يَشْرَبُ الوَلَدُ الـمَاءَ البارِدَ", hint: "4 kata" },
+        { level: 7, words: ["يَأْكُلُ", "الضَّيْفُ", "الطَّعَامَ", "فِي", "المَطْعَمِ"], correct: "يَأْكُلُ الضَّيْفُ الطَّعَامَ فِي المَطْعَمِ", hint: "5 kata" },
+        { level: 8, words: ["يَفْهَمُ", "الطُّلاَّبُ", "الدَّرْسَ", "جَيِّدًا"], correct: "يَفْهَمُ الطُّلاَّبُ الدَّرْسَ جَيِّدًا", hint: "4 kata" },
+        { level: 9, words: ["تَطْبُخُ", "الأُمُّ", "الرُّزَّ", "فِي", "المَطْبَخِ"], correct: "تَطْبُخُ الأُمُّ الرُّزَّ فِي المَطْبَخِ", hint: "5 kata" },
+        { level: 10, words: ["يَحْفَظُ", "زَيْدٌ", "القُرْآنَ", "فِي", "المَسْجِدِ"], correct: "يَحْفَظُ زَيْدٌ القُرْآنَ فِي المَسْجِدِ", hint: "5 kata" }
+      ],
+      tema03: getGenericGameLevels("Zharaf"),
+      tema04: getGenericGameLevels("Idhafah"),
+      tema05: getGenericGameLevels("Naat"),
+      tema06: getGenericGameLevels("Tafdhil")
+    };
+
+    function getGenericGameLevels(type) {
+      return [
+        { level: 1, words: ["صَبَاحًا", "سَافَرْتُ"], correct: "سَافَرْتُ صَبَاحًا", hint: "2 kata" },
+        { level: 2, words: ["فَوْقَ", "الكِتَابُ", "المَكْتَبِ"], correct: "الكِتَابُ فَوْقَ المَكْتَبِ", hint: "3 kata" },
+        { level: 3, words: ["أَمَامَ", "يَقِفُ", "المَسْجِدِ"], correct: "يَقِفُ أَمَامَ المَسْجِدِ", hint: "3 kata" },
+        { level: 4, words: ["لَيْلًا", "يَنَامُ", "الطِّفْلُ"], correct: "يَنَامُ الطِّفْلُ لَيْلًا", hint: "3 kata" },
+        { level: 5, words: ["بَيْنَ", "البَيْتُ", "المَسْجِدِ", "وَالمَدْرَسَةِ"], correct: "البَيْتُ بَيْنَ المَسْجِدِ وَالمَدْرَسَةِ", hint: "4 kata" },
+        { level: 6, words: ["تَحْتَ", "يَجْلِسُ", "الوَلَدُ", "الشَّجَرَةِ"], correct: "يَجْلِسُ الوَلَدُ تَحْتَ الشَّجَرَةِ", hint: "4 kata" },
+        { level: 7, words: ["مَسَاءً", "يَرْجِعُ", "العَامِلُ", "مِنَ", "العَمَلِ"], correct: "يَرْجِعُ العَامِلُ مِنَ العَمَلِ مَسَاءً", hint: "5 kata" },
+        { level: 8, words: ["خَلْفَ", "يَمْشِي", "الرَّجُلُ", "الإِمَامِ"], correct: "يَمْشِي الرَّجُلُ خَلْفَ الإِمَامِ", hint: "4 kata" },
+        { level: 9, words: ["يَوْمَ", "نَصُومُ", "الاِثْنَيْنِ", "تَطَوُّعًا"], correct: "نَصُومُ يَوْمَ الاِثْنَيْنِ تَطَوُّعًا", hint: "4 kata" },
+        { level: 10, words: ["أَمَامَ", "يَقِفُ", "المُعَلِّمُ", "التَّلاَمِيذِ", "فِي", "الفَصْلِ"], correct: "يَقِفُ المُعَلِّمُ أَمَامَ التَّلاَمِيذِ فِي الفَصْلِ", hint: "6 kata mahir" }
+      ];
+    }
+
+
+    /* ================= 2. STATE MANAGEMENT & LOCALSTORAGE ================= */
+    let QUIZ_DB = buildQuizDatabase();
+
+    let state = {
+      users: JSON.parse(localStorage.getItem('al_users')) || [
+        { name: 'Ahmad', email: 'ahmad@gmail.com', password: '123', role: 'murid', xp: 40, quizProgress: {} },
+        { name: 'Ustaz Ridwan', email: 'ustaz@gmail.com', password: '123', role: 'guru', xp: 0 }
+      ],
+      currentUser: JSON.parse(localStorage.getItem('al_current_user')) || null,
+      currentThemeId: null,
+      currentQuizIndex: 0,
+      userAnswers: {},
+      currentGameLevel: 1,
+      selectedGameWords: []
+    };
+
+    function saveState() {
+      localStorage.setItem('al_users', JSON.stringify(state.users));
+      if (state.currentUser) {
+        localStorage.setItem('al_current_user', JSON.stringify(state.currentUser));
+      } else {
+        localStorage.removeItem('al_current_user');
+      }
+    }
+
+    /* ================= 3. AUTHENTICATION & ROUTING ================= */
+    window.addEventListener('DOMContentLoaded', () => {
+      lucide.createIcons();
+      if (state.currentUser) {
+        syncCurrentUser();
+        navigateTo(state.currentUser.role === 'guru' ? 'teacher' : 'dashboard');
+      } else {
+        navigateTo('auth');
+      }
+    });
+
+    function syncCurrentUser() {
+      const found = state.users.find(u => u.email === state.currentUser.email);
+      if (found) {
+        state.currentUser = found;
+        saveState();
+      }
+    }
+
+    function switchAuthTab(tab) {
+      const loginForm = document.getElementById('loginForm');
+      const regForm = document.getElementById('registerForm');
+      const tabLoginBtn = document.getElementById('tabLoginBtn');
+      const tabRegBtn = document.getElementById('tabRegisterBtn');
+
+      if (tab === 'login') {
+        loginForm.classList.remove('hidden');
+        regForm.classList.add('hidden');
+        tabLoginBtn.className = "flex-1 py-3 text-center border-b-2 border-blue-500 text-blue-400 transition";
+        tabRegBtn.className = "flex-1 py-3 text-center border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition";
+      } else {
+        loginForm.classList.add('hidden');
+        regForm.classList.remove('hidden');
+        tabRegBtn.className = "flex-1 py-3 text-center border-b-2 border-blue-500 text-blue-400 transition";
+        tabLoginBtn.className = "flex-1 py-3 text-center border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition";
+      }
+    }
+
+    function handleLogin(e) {
+      e.preventDefault();
+      const idInput = document.getElementById('loginIdentifier').value.trim().toLowerCase();
+      const passInput = document.getElementById('loginPassword').value.trim();
+
+      const user = state.users.find(u => 
+        (u.email.toLowerCase() === idInput || u.name.toLowerCase() === idInput) && u.password === passInput
+      );
+
+      if (user) {
+        state.currentUser = user;
+        saveState();
+        navigateTo(user.role === 'guru' ? 'teacher' : 'dashboard');
+      } else {
+        alert("Email/Nama atau kata sandi tidak cocok!");
+      }
+    }
+
+    function handleRegister(e) {
+      e.preventDefault();
+      const role = document.querySelector('input[name="regRole"]:checked').value;
+      const name = document.getElementById('regName').value.trim();
+      const email = document.getElementById('regEmail').value.trim();
+      const password = document.getElementById('regPassword').value.trim();
+
+      if (state.users.some(u => u.email.toLowerCase() === email.toLowerCase())) {
+        alert("Email ini sudah terdaftar! Silakan login.");
+        return;
+      }
+
+      const newUser = { name, email, password, role, xp: 0, quizProgress: {} };
+      state.users.push(newUser);
+      state.currentUser = newUser;
+      saveState();
+
+      alert("Pendaftaran berhasil! Selamat datang.");
+      navigateTo(role === 'guru' ? 'teacher' : 'dashboard');
+    }
+
+    function handleLogout() {
+      state.currentUser = null;
+      localStorage.removeItem('al_current_user');
+      navigateTo('auth');
+    }
+
+    function handleResetAllData() {
+      if (confirm("Apakah Anda yakin ingin menghapus seluruh data pengguna dan reset ulang browser (LocalStorage)?")) {
+        localStorage.clear();
+        location.reload();
+      }
+    }
+
+    function openForgotPasswordModal() {
+      document.getElementById('forgotPasswordModal').classList.remove('hidden');
+    }
+
+    function closeForgotPasswordModal() {
+      document.getElementById('forgotPasswordModal').classList.add('hidden');
+    }
+
+    function handleForgotPassword(e) {
+      e.preventDefault();
+      const email = document.getElementById('resetEmail').value.trim();
+      const newPass = document.getElementById('resetNewPassword').value.trim();
+
+      const user = state.users.find(u => u.email.toLowerCase() === email.toLowerCase());
+      if (user) {
+        user.password = newPass;
+        saveState();
+        alert(`Kata sandi untuk ${user.name} berhasil diperbarui! Silakan masuk.`);
+        closeForgotPasswordModal();
+      } else {
+        alert("Email tidak ditemukan dalam sistem.");
+      }
+    }
+
+    /* ================= 4. NAVIGATION & VIEW CONTROLLER ================= */
+    function navigateTo(view) {
+      const authSection = document.getElementById('authSection');
+      const studentDashboard = document.getElementById('studentDashboard');
+      const teacherDashboard = document.getElementById('teacherDashboard');
+      const quizSection = document.getElementById('quizSection');
+      const gameSection = document.getElementById('gameSection');
+      const navUserArea = document.getElementById('navUserArea');
+
+      authSection.classList.add('hidden');
+      studentDashboard.classList.add('hidden');
+      teacherDashboard.classList.add('hidden');
+      quizSection.classList.add('hidden');
+      gameSection.classList.add('hidden');
+
+      if (state.currentUser) {
+        navUserArea.classList.remove('hidden');
+        navUserArea.classList.add('flex');
+        document.getElementById('navUserName').textContent = state.currentUser.name;
+        document.getElementById('navUserXp').textContent = `${state.currentUser.xp || 0} XP`;
+        
+        const isGuru = state.currentUser.role === 'guru';
+        document.getElementById('navRoleBadge').textContent = isGuru ? "👨‍🏫 Guru / Ustaz" : "👨‍🎓 Murid";
+        document.getElementById('navRoleBadge').className = isGuru 
+          ? "px-2.5 py-0.5 rounded-full text-xs font-bold bg-indigo-600/30 text-indigo-300 border border-indigo-500/30"
+          : "px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-600/30 text-blue-300 border border-blue-500/30";
+      } else {
+        navUserArea.classList.add('hidden');
+      }
+
+      if (view === 'auth') {
+        authSection.classList.remove('hidden');
+      } else if (view === 'dashboard') {
+        studentDashboard.classList.remove('hidden');
+        renderStudentDashboard();
+      } else if (view === 'teacher') {
+        teacherDashboard.classList.remove('hidden');
+        renderTeacherDashboard();
+      } else if (view === 'quiz') {
+        quizSection.classList.remove('hidden');
+        renderQuizQuestion();
+      } else if (view === 'game') {
+        gameSection.classList.remove('hidden');
+        initGameLevel();
+      }
+
+      lucide.createIcons();
+    }
+
+
+    /* ================= 5. DASHBOARD RENDERERS ================= */
+    function renderStudentDashboard() {
+      document.getElementById('dashUserName').textContent = state.currentUser.name;
+      document.getElementById('dashUserXp').textContent = state.currentUser.xp || 0;
+
+      const grid = document.getElementById('themeGrid');
+      grid.innerHTML = '';
+
+      CURRICULUM.forEach((theme) => {
+        const userProg = state.currentUser.quizProgress || {};
+        const lastIndex = userProg[theme.id] !== undefined ? userProg[theme.id] : 0;
+        const isStarted = lastIndex > 0;
+
+        const card = document.createElement('div');
+        card.className = "glass-card rounded-3xl p-6 border border-blue-800/40 hover:border-blue-500/60 transition flex flex-col justify-between space-y-5 relative group";
+
+        card.innerHTML = `
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-extrabold text-cyan-400 bg-cyan-500/10 px-3 py-1 rounded-full border border-cyan-500/20">
+                ${theme.id.toUpperCase()}
+              </span>
+              <span class="text-xs text-slate-400 font-medium">20 Soal + Game</span>
+            </div>
+            
+            <h4 class="text-lg font-bold text-white group-hover:text-cyan-300 transition">${theme.title}</h4>
+            <p class="font-arabic text-2xl text-blue-200 rtl my-1">${theme.titleAr}</p>
+            <p class="text-xs text-slate-300 leading-relaxed">${theme.desc}</p>
+          </div>
+
+          <div class="pt-4 border-t border-slate-800/80 space-y-2">
+            <div class="flex items-center justify-between text-xs text-slate-400 mb-1">
+              <span>Progres Kuis:</span>
+              <span class="font-bold text-slate-200">${lastIndex} / 20 Soal</span>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2">
+              <button onclick="startQuiz('${theme.id}')" class="w-full py-2.5 px-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold transition flex items-center justify-center space-x-1 shadow-md shadow-blue-600/20">
+                <i data-lucide="${isStarted ? 'play' : 'book-open'}" class="w-3.5 h-3.5 mr-1"></i>
+                <span>${isStarted ? `Lanjut (No. ${lastIndex + 1})` : 'Mulai Kuis'}</span>
+              </button>
+
+              <button onclick="startGame('${theme.id}')" class="w-full py-2.5 px-3 rounded-xl bg-cyan-600/30 hover:bg-cyan-600/50 text-cyan-200 border border-cyan-500/40 text-xs font-bold transition flex items-center justify-center space-x-1">
+                <i data-lucide="gamepad-2" class="w-3.5 h-3.5 mr-1"></i>
+                <span>Mini Game</span>
+              </button>
+            </div>
+          </div>
+        `;
+
+        grid.appendChild(card);
+      });
+      lucide.createIcons();
+    }
+
+    function renderTeacherDashboard() {
+      const tbody = document.getElementById('teacherTableBody');
+      tbody.innerHTML = '';
+
+      const students = state.users.filter(u => u.role === 'murid');
+
+      if (students.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" class="px-6 py-8 text-center text-slate-500">Belum ada murid terdaftar.</td></tr>`;
+        return;
+      }
+
+      students.forEach((s, idx) => {
+        const prog = s.quizProgress || {};
+        let progDetails = [];
+        for (const [tId, pVal] of Object.entries(prog)) {
+          progDetails.push(`${tId.toUpperCase()}: ${pVal}/20`);
+        }
+        const progString = progDetails.length > 0 ? progDetails.join(' | ') : 'Belum memulai';
+
+        const tr = document.createElement('tr');
+        tr.className = "hover:bg-slate-900/50 transition";
+        tr.innerHTML = `
+          <td class="px-6 py-4 font-bold text-slate-400">${idx + 1}</td>
+          <td class="px-6 py-4 font-bold text-slate-100">${s.name}</td>
+          <td class="px-6 py-4 text-slate-400">${s.email}</td>
+          <td class="px-6 py-4">
+            <span class="inline-flex items-center text-amber-400 font-extrabold bg-amber-500/10 px-2.5 py-1 rounded-full border border-amber-500/20 text-xs">
+              <i data-lucide="zap" class="w-3 h-3 mr-1"></i> ${s.xp || 0} XP
+            </span>
+          </td>
+          <td class="px-6 py-4 text-xs text-cyan-300">${progString}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      lucide.createIcons();
+    }
+
+
+    /* ================= 6. QUIZ MODULE ENGINE ================= */
+    function startQuiz(themeId) {
+      state.currentThemeId = themeId;
+      const userProg = state.currentUser.quizProgress || {};
+      state.currentQuizIndex = userProg[themeId] !== undefined ? Math.min(userProg[themeId], 19) : 0;
+      navigateTo('quiz');
+    }
+
+    function renderQuizQuestion() {
+      const theme = CURRICULUM.find(t => t.id === state.currentThemeId);
+      const questions = QUIZ_DB[state.currentThemeId];
+      const q = questions[state.currentQuizIndex];
+
+      document.getElementById('quizThemeTitle').textContent = theme.title;
+      document.getElementById('quizThemeSub').textContent = `Soal ${state.currentQuizIndex + 1} dari 20`;
+      document.getElementById('quizProgressNum').textContent = `${state.currentQuizIndex + 1} / 20`;
+
+      // Qira'ah Box
+      const qiraahBox = document.getElementById('qiraahBox');
+      if (q.isQiraah) {
+        qiraahBox.classList.remove('hidden');
+        document.getElementById('qiraahText').textContent = q.qiraahText;
+        document.getElementById('questionTypeBadge').textContent = "📖 Teks Bacaan Qira'ah";
+        document.getElementById('questionTypeBadge').className = "inline-block px-3 py-1 rounded-full text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30";
+      } else {
+        qiraahBox.classList.add('hidden');
+        document.getElementById('questionTypeBadge').textContent = "✍️ Nahwu & Tarjamah";
+        document.getElementById('questionTypeBadge').className = "inline-block px-3 py-1 rounded-full text-xs font-bold bg-blue-600/20 text-blue-300 border border-blue-500/30";
+      }
+
+      document.getElementById('questionTitle').textContent = q.questionPrompt;
+      document.getElementById('arabicQuestionText').textContent = q.arabicText;
+
+      // Render Options
+      const optContainer = document.getElementById('optionsContainer');
+      optContainer.innerHTML = '';
+
+      const themeAnswers = (state.userAnswers[state.currentThemeId] = state.userAnswers[state.currentThemeId] || {});
+      const previousAnswer = themeAnswers[state.currentQuizIndex];
+
+      q.options.forEach((optText, optIdx) => {
+        const btn = document.createElement('button');
+        btn.onclick = () => selectQuizAnswer(optIdx);
+
+        let borderClass = "border-slate-800 hover:border-blue-500/60 bg-slate-900/80";
+        if (previousAnswer !== undefined) {
+          if (optIdx === q.correctIndex) {
+            borderClass = "border-emerald-500 bg-emerald-500/10 text-emerald-300 font-bold";
+          } else if (optIdx === previousAnswer) {
+            borderClass = "border-rose-500 bg-rose-500/10 text-rose-300";
+          }
+        }
+
+        btn.className = `w-full p-4 rounded-2xl border text-center transition flex items-center justify-center space-x-3 ${borderClass}`;
+        btn.innerHTML = `
+          <span class="w-7 h-7 rounded-full bg-slate-800 text-slate-300 text-xs font-bold flex items-center justify-center border border-slate-700">
+            ${['أ', 'ب', 'ج', 'د'][optIdx]}
+          </span>
+          <span class="font-arabic text-xl sm:text-2xl text-slate-100 rtl">${optText}</span>
+        `;
+
+        optContainer.appendChild(btn);
+      });
+
+      // Feedback Card & Analysis
+      const feedbackCard = document.getElementById('feedbackCard');
+      if (previousAnswer !== undefined) {
+        feedbackCard.classList.remove('hidden');
+        const isCorrect = previousAnswer === q.correctIndex;
+
+        if (isCorrect) {
+          feedbackCard.className = "rounded-2xl p-5 border space-y-3 transition bg-emerald-950/40 border-emerald-500/40 text-emerald-200";
+          document.getElementById('feedbackIcon').className = "w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold";
+          document.getElementById('feedbackIcon').innerHTML = "✓";
+          document.getElementById('feedbackTitle').textContent = "Jawaban Benar! (+10 XP)";
+        } else {
+          feedbackCard.className = "rounded-2xl p-5 border space-y-3 transition bg-rose-950/40 border-rose-500/40 text-rose-200";
+          document.getElementById('feedbackIcon').className = "w-8 h-8 rounded-full bg-rose-500/20 text-rose-400 flex items-center justify-center font-bold";
+          document.getElementById('feedbackIcon').innerHTML = "✕";
+          document.getElementById('feedbackTitle').textContent = "Jawaban Kurang Tepat";
+        }
+
+        document.getElementById('feedbackAnalysis').textContent = q.analysis;
+      } else {
+        feedbackCard.classList.add('hidden');
+      }
+
+      // Prev / Next button states
+      document.getElementById('prevQuestionBtn').disabled = state.currentQuizIndex === 0;
+      document.getElementById('prevQuestionBtn').style.opacity = state.currentQuizIndex === 0 ? "0.5" : "1";
+    }
+
+    function selectQuizAnswer(optIndex) {
+      const questions = QUIZ_DB[state.currentThemeId];
+      const q = questions[state.currentQuizIndex];
+
+      const themeAnswers = (state.userAnswers[state.currentThemeId] = state.userAnswers[state.currentThemeId] || {});
+      const alreadyAnswered = themeAnswers[state.currentQuizIndex] !== undefined;
+
+      themeAnswers[state.currentQuizIndex] = optIndex;
+
+      // Award XP only on first correct attempt
+      if (!alreadyAnswered && optIndex === q.correctIndex) {
+        state.currentUser.xp = (state.currentUser.xp || 0) + 10;
+      }
+
+      // Auto save quiz progress index in user profile
+      state.currentUser.quizProgress = state.currentUser.quizProgress || {};
+      state.currentUser.quizProgress[state.currentThemeId] = Math.max(
+        state.currentUser.quizProgress[state.currentThemeId] || 0,
+        state.currentQuizIndex + 1
+      );
+
+      saveState();
+      renderQuizQuestion();
+    }
+
+    function navigateQuiz(dir) {
+      const newIdx = state.currentQuizIndex + dir;
+      if (newIdx >= 0 && newIdx < 20) {
+        state.currentQuizIndex = newIdx;
+        renderQuizQuestion();
+      } else if (newIdx >= 20) {
+        alert("Selamat! Anda telah menyelesaikan seluruh 20 soal kuis pada tema ini.");
+        navigateTo('dashboard');
+      }
+    }
+
+
+    /* ================= 7. MINI GAME MODULE ENGINE ================= */
+    function startGame(themeId) {
+      state.currentThemeId = themeId;
+      state.currentGameLevel = 1;
+      navigateTo('game');
+    }
+
+    function initGameLevel() {
+      const levels = GAME_DATABASE[state.currentThemeId] || GAME_DATABASE['tema01'];
+      const currentData = levels.find(l => l.level === state.currentGameLevel) || levels[0];
+
+      const theme = CURRICULUM.find(t => t.id === state.currentThemeId);
+      document.getElementById('gameTitle').textContent = `Mini Game: ${theme.title}`;
+      document.getElementById('gameSubtitle').textContent = `Tingkat ${currentData.hint || 'Susun Kalimat'}`;
+      document.getElementById('gameLevelDisplay').textContent = `${state.currentGameLevel} / 10`;
+
+      document.getElementById('gameFeedback').classList.add('hidden');
+      document.getElementById('nextGameLevelBtn').classList.add('hidden');
+
+      state.selectedGameWords = [];
+
+      // Render Word Scramble Interactive Area
+      const gameArea = document.getElementById('gameArea');
+      gameArea.innerHTML = `
+        <!-- Answer Drop / Display Area -->
+        <div id="wordTargetArea" class="w-full min-h-[70px] bg-slate-900/90 border-2 border-dashed border-cyan-500/40 rounded-2xl p-4 flex flex-wrap items-center justify-center gap-3 rtl">
+          <span class="text-xs text-slate-500 ltr">Klik kata di bawah untuk menyusun kalimat di sini...</span>
+        </div>
+
+        <!-- Word Pool Source Area -->
+        <div id="wordSourceArea" class="flex flex-wrap items-center justify-center gap-3 pt-4 rtl">
+          <!-- Shuffle words -->
+        </div>
+      `;
+
+      const sourceArea = document.getElementById('wordSourceArea');
+      const shuffled = [...currentData.words].sort(() => Math.random() - 0.5);
+
+      shuffled.forEach((w) => {
+        const wordBtn = document.createElement('button');
+        wordBtn.className = "px-5 py-3 rounded-2xl bg-blue-900/60 border border-blue-500/40 hover:border-cyan-400 text-cyan-100 font-arabic text-2xl shadow-md transition transform active:scale-95";
+        wordBtn.textContent = w;
+        wordBtn.onclick = () => selectGameWord(w, wordBtn);
+        sourceArea.appendChild(wordBtn);
+      });
+    }
+
+    function selectGameWord(word, btnElement) {
+      state.selectedGameWords.push(word);
+      btnElement.classList.add('opacity-30', 'pointer-events-none');
+
+      renderTargetWords();
+      checkGameSolution();
+    }
+
+    function renderTargetWords() {
+      const targetArea = document.getElementById('wordTargetArea');
+      targetArea.innerHTML = '';
+
+      state.selectedGameWords.forEach((word, idx) => {
+        const wordChip = document.createElement('button');
+        wordChip.className = "px-4 py-2 rounded-xl bg-cyan-600 text-white font-arabic text-2xl shadow flex items-center space-x-2";
+        wordChip.textContent = word;
+        wordChip.onclick = () => deselectGameWord(idx);
+        targetArea.appendChild(wordChip);
+      });
+    }
+
+    function deselectGameWord(index) {
+      const removed = state.selectedGameWords.splice(index, 1)[0];
+      
+      const sourceBtns = document.querySelectorAll('#wordSourceArea button');
+      sourceBtns.forEach(btn => {
+        if (btn.textContent === removed && btn.classList.contains('opacity-30')) {
+          btn.classList.remove('opacity-30', 'pointer-events-none');
+        }
+      });
+
+      renderTargetWords();
+      checkGameSolution();
+    }
+
+    function checkGameSolution() {
+      const levels = GAME_DATABASE[state.currentThemeId] || GAME_DATABASE['tema01'];
+      const currentData = levels.find(l => l.level === state.currentGameLevel) || levels[0];
+
+      const userSentence = state.selectedGameWords.join(' ');
+      const feedback = document.getElementById('gameFeedback');
+      const nextBtn = document.getElementById('nextGameLevelBtn');
+
+      if (state.selectedGameWords.length === currentData.words.length) {
+        feedback.classList.remove('hidden');
+        if (userSentence === currentData.correct) {
+          feedback.className = "rounded-2xl p-4 text-center font-bold text-sm bg-emerald-950/60 border border-emerald-500/40 text-emerald-200";
+          feedback.innerHTML = `🎉 ممتاز! Susunan Kalimat Benar! (+15 XP)`;
+          
+          state.currentUser.xp = (state.currentUser.xp || 0) + 15;
+          saveState();
+
+          nextBtn.classList.remove('hidden');
+        } else {
+          feedback.className = "rounded-2xl p-4 text-center font-bold text-sm bg-rose-950/60 border border-rose-500/40 text-rose-200";
+          feedback.innerHTML = `❌ Susunan kata belum tepat. Klik kata pada kotak untuk menghapus dan mencoba lagi.`;
+        }
+      } else {
+        feedback.classList.add('hidden');
+      }
+    }
+
+    function resetCurrentGameLevel() {
+      initGameLevel();
+    }
+
+    function nextGameLevel() {
+      if (state.currentGameLevel < 10) {
+        state.currentGameLevel++;
+        initGameLevel();
+      } else {
+        alert("🏆 Selamat! Anda berhasil menyelesaikan seluruh 10 level Mini Game pada tema ini!");
+        navigateTo('dashboard');
+      }
+    }
+  </script>
+</body>
+</html>
